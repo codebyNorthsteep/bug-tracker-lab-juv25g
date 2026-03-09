@@ -13,8 +13,10 @@ public class Bug {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "development_area")
     private DevelopmentArea developerArea;
 
