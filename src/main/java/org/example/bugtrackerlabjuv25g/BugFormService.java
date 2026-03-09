@@ -9,21 +9,24 @@ import java.util.Optional;
 @Service
 public class BugFormService {
     BugRepository bugRepository;
+    BugMapper mapper;
 
     public BugFormService(BugRepository bugRepositry){
         this.bugRepository = bugRepositry;
+        mapper = new BugMapper();
     }
 
-    public void saveReport(Bug bugFrom){
-        bugRepository.save(bugFrom);
+    public void saveReport(CreateBugDTO bugForm){
+        bugRepository.save(mapper.toEntity(bugForm));
     }
 
     public Optional<Bug> getReport(long id){
         return bugRepository.findById(id);
     }
 
-    public List<Bug> getAllBugs(){
-        return bugRepository.findAll();
+    public List<BugDTO> getAllBugs(){
+        return bugRepository.findAll().stream().map(mapper::toDTO)
+                .toList();
     }
 
 }

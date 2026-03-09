@@ -9,10 +9,17 @@ public class BugMapper {
     //Convert CreateBugDTO to BugEntity
     public Bug toEntity(CreateBugDTO createBugDTO) {
         Bug bug = new Bug();
-        bug.setTitle(createBugDTO.title());
-        bug.setDescription(createBugDTO.description());
-        bug.setPriority(createBugDTO.priority());
-        bug.setDeveloperArea(createBugDTO.developerArea());
+        System.out.printf("""
+                Title: %s
+                Description: %s
+                Prio: %s
+                DevArea: %s
+                """, createBugDTO.getTitle(), createBugDTO.getDescription(),
+                createBugDTO.getPriority().toString(), createBugDTO.getDeveloperArea().toString());
+        bug.setTitle(createBugDTO.getTitle());
+        bug.setDescription(createBugDTO.getDescription());
+        bug.setPriority(createBugDTO.getPriority());
+        bug.setDeveloperArea(createBugDTO.getDeveloperArea());
         bug.setBugDate(LocalDateTime.now());
 
         return bug;

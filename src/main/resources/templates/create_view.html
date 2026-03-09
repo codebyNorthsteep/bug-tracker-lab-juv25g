@@ -17,7 +17,11 @@
             <option th:each="prio : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
                     th:value="${prio}" th:text="${prio}"></option>
     </select>
-<!--    TODO make a drop down list of enums instead.-->
+    <label for="dev_area">Development area</label>
+    <select name="developerarea" id="dev_area">
+        <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.DevelopmentArea).values()}"
+                th:value="${dev}" th:text="${dev}"></option>
+    </select>
     <button type="submit">Save</button>
 </form>
 </body>

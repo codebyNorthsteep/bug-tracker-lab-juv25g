@@ -22,13 +22,12 @@ public class BugFormController {
 
     @GetMapping("/reports/add")
     public String showBugForm(Model model){
-        model.addAttribute("bugForm", new Bug());
+        model.addAttribute("bugForm", new CreateBugDTO());
         return "create_view";
     }
 
     @PostMapping("/reports/add")
-    public String postBugForm(@ModelAttribute("bugform") Bug bugForm){
-        System.out.println("Saved bug! " + bugForm.getTitle());
+    public String postBugForm(@ModelAttribute("bugform") @Valid CreateBugDTO bugForm){
         bugformService.saveReport(bugForm);
         return "redirect:/reports/all";
     }
