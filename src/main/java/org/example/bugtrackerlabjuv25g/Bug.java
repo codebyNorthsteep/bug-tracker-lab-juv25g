@@ -1,21 +1,37 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "bugs")
 public class Bug {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title can not be empty")
+    @Size(min = 3, max = 100, message = "Title must be in between {min} and {max} characters")
     private String title;
 
+    @NotBlank(message = "Description can not be empty")
+    @Size(max = 1000, message = "Description must be at most {max} characters")
+    @Column(length = 1000) // More space for text in database
     private String description;
 
+    @NotNull(message = "Date must be provided")
+    @PastOrPresent(message = "Date can not be in the future")
+    @Column(name = "bug_date")
+    private LocalDateTime bugDate;
+
+    @NotNull(message = "Priority must be chosen")
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    @NotNull(message = "Development area must be chosen")
     @Enumerated(EnumType.STRING)
     @Column(name = "development_area")
     private DevelopmentArea developerArea;
@@ -63,5 +79,11 @@ public class Bug {
         this.title = title;
     }
 
+    public LocalDateTime getBugDate() {
+        return bugDate;
+    }
 
+    public void setBugDate(LocalDateTime bugDate) {
+        this.bugDate = bugDate;
+    }
 }
