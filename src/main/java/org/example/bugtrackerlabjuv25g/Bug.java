@@ -18,6 +18,7 @@ public class Bug {
     private String title;
 
     @NotBlank(message = "Description can not be empty")
+    @Size(max = 1000, message = "Description must be at most {max} characters")
     @Column(length = 1000) // More space for text in database
     private String description;
 
