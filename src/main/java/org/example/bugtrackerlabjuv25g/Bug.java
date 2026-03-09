@@ -26,11 +26,11 @@ public class Bug {
     @Column(name = "bug_date")
     private LocalDateTime bugDate;
 
-    @NotNull(message = "Priority must me chosen")
+    @NotNull(message = "Priority must be chosen")
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @NotNull(message = "Development are must be chosen")
+    @NotNull(message = "Development area must be chosen")
     @Enumerated(EnumType.STRING)
     @Column(name = "development_area")
     private DevelopmentArea developerArea;
