@@ -27,7 +27,7 @@ public class BugFormController {
     }
 
     @PostMapping("/reports/add")
-    public String postBugForm(@ModelAttribute("bugform") @Valid CreateBugDTO bugForm){
+    public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm){
         bugformService.saveReport(bugForm);
         return "redirect:/reports/all";
     }

@@ -48,7 +48,7 @@ public class CreateBugDTO {
         return developerArea;
     }
 
-    public void setDeveloperArea(String developerArea) {
-        this.developerArea = DevelopmentArea.fromString(developerArea);
+    public void setDeveloperArea(DevelopmentArea developerArea) {
+        this.developerArea = developerArea;
     }
 }

@@ -1,21 +1,24 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
 public class BugMapper {
+    private static final Logger logger = LoggerFactory.getLogger(BugMapper.class);
+
+
     //Convert CreateBugDTO to BugEntity
     public Bug toEntity(CreateBugDTO createBugDTO) {
+        logger.debug("Creating bug: title='{}', priority='{}', devArea='{}'",
+                createBugDTO.getTitle(),
+                createBugDTO.getPriority(),
+                createBugDTO.getDeveloperArea());
+
         Bug bug = new Bug();
-        System.out.printf("""
-                Title: %s
-                Description: %s
-                Prio: %s
-                DevArea: %s
-                """, createBugDTO.getTitle(), createBugDTO.getDescription(),
-                createBugDTO.getPriority().toString(), createBugDTO.getDeveloperArea().toString());
         bug.setTitle(createBugDTO.getTitle());
         bug.setDescription(createBugDTO.getDescription());
         bug.setPriority(createBugDTO.getPriority());
