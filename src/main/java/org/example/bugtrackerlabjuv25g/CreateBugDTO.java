@@ -15,4 +15,5 @@ public record CreateBugDTO(@NotBlank(message = "Title can not be empty")
 
                            @NotNull(message = "Development area must be specified")
                            DevelopmentArea developerArea) {
+
 }

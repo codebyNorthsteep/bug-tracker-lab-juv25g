@@ -8,8 +8,11 @@ import java.util.Optional;
 
 @Service
 public class BugFormService {
-    @Autowired
     BugRepository bugRepository;
+
+    public BugFormService(BugRepository bugRepositry){
+        this.bugRepository = bugRepositry;
+    }
 
     public void saveReport(Bug bugFrom){
         bugRepository.save(bugFrom);

@@ -1,5 +1,6 @@
 package org.example.bugtrackerlabjuv25g;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,11 @@ import java.util.List;
 @Controller
 public class BugFormController {
 
-    @Autowired
     BugFormService bugformService;
+
+    public BugFormController(BugFormService bugformService){
+        this.bugformService = bugformService;
+    }
 
     @GetMapping("/reports/add")
     public String showBugForm(Model model){
@@ -26,7 +30,7 @@ public class BugFormController {
     public String postBugForm(@ModelAttribute("bugform") Bug bugForm){
         System.out.println("Saved bug! " + bugForm.getTitle());
         bugformService.saveReport(bugForm);
-        return "showform";
+        return "redirect:/reports/all";
     }
 
     @GetMapping("/reports/all")
