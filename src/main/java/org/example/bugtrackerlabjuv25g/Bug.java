@@ -2,6 +2,8 @@ package org.example.bugtrackerlabjuv25g;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Bug {
 
@@ -12,6 +14,9 @@ public class Bug {
     private String title;
 
     private String description;
+
+    @Column(name = "bug_date")
+    private LocalDateTime bugDate;
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
@@ -63,5 +68,11 @@ public class Bug {
         this.title = title;
     }
 
+    public LocalDateTime getBugDate() {
+        return bugDate;
+    }
 
+    public void setBugDate(LocalDateTime bugDate) {
+        this.bugDate = bugDate;
+    }
 }
