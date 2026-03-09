@@ -11,9 +11,9 @@ public class BugFormService {
     BugRepository bugRepository;
     BugMapper mapper;
 
-    public BugFormService(BugRepository bugRepositry){
-        this.bugRepository = bugRepositry;
-        mapper = new BugMapper();
+    public BugFormService(BugRepository bugRepository, BugMapper bugMapper){
+        this.bugRepository = bugRepository;
+        this.mapper = bugMapper;
     }
 
     public void saveReport(CreateBugDTO bugForm){

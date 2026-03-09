@@ -11,6 +11,9 @@
             <th>Id</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Priority</th>
+            <th>Area</th>
+            <th>Created</th>
         </tr>
     </thead>
     <tbody>
@@ -18,9 +21,12 @@
         <td colspan="3">No bugs found</td>
     </tr>
     <tr th:each="bug : ${bugs}">
-        <td><span th:text="${bug.getId()}">Id</span></td>
-        <td><span th:text="${bug.getTitle()}">Title</span></td>
-        <td><span th:text="${bug.getDescription()}">Description</span></td>
+        <td><span th:text="${bug.id()}">Id</span></td>
+        <td><span th:text="${bug.title()}">Title</span></td>
+        <td><span th:text="${bug.description()}">Description</span></td>
+        <td><span th:text="${bug.priority()}">Description</span></td>
+        <td><span th:text="${bug.developerArea()}">Description</span></td>
+        <td><span th:text="${bug.bugDate()}">Description</span></td>
     </tr>
     </tbody>
 </table>

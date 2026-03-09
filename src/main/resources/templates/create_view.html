@@ -18,7 +18,7 @@
                     th:value="${prio}" th:text="${prio}"></option>
     </select>
     <label for="dev_area">Development area</label>
-    <select name="developerarea" id="dev_area">
+    <select name="developerArea" id="dev_area">
         <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.DevelopmentArea).values()}"
                 th:value="${dev}" th:text="${dev}"></option>
     </select>
