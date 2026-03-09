@@ -10,6 +10,7 @@ public record UpdateBugDTO(@NotNull
                            String title,
 
                            @NotBlank(message = "Description can not be empty")
+                           @Size(max = 1000, message = "Description must be at most {max} characters")
                            String description,
 
                            @NotNull(message = "Priority must be specified")
