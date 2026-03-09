@@ -7,7 +7,7 @@
 <body>
     <nav>GoElseWhere</nav>
     <h1>Create a bug report</h1>
-<form th:action="@{/report}" th:object="${bugForm}" method="post">
+<form th:action="@{/reports/add}" th:object="${bugForm}" method="post">
     <label for="title">Title</label>
     <input type="text" th:field="*{title}" id="title"></br>
     <label for="descr">Description</label>
