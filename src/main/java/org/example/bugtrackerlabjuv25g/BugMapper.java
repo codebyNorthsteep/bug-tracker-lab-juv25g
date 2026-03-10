@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class BugMapper {
@@ -18,12 +19,16 @@ public class BugMapper {
                 createBugDTO.priority(),
                 createBugDTO.developerArea());
 
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = time.format(formatter);
+
         Bug bug = new Bug();
         bug.setTitle(createBugDTO.title());
         bug.setDescription(createBugDTO.description());
         bug.setPriority(createBugDTO.priority());
         bug.setDeveloperArea(createBugDTO.developerArea());
-        bug.setBugDate(LocalDateTime.now());
+        bug.setBugDate(formattedTime);
 
         return bug;
     }
