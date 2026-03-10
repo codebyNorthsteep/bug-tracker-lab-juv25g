@@ -33,4 +33,10 @@ public class BugFormService {
         return bugRepository.count();
     }
 
+    public long getHighPrioBugs(){
+        return bugRepository.findAll().stream().filter(
+                bug -> bug.getPriority().equals(Priority.HIGH)
+        ).count();
+    }
+
 }

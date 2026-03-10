@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Bug Report</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-    <nav><a href="buglist.html">Go to List</a></nav>
+    <nav><a th:href="@{/}">Go to List</a></nav>
     <h1>Create a bug report</h1>
 <form th:action="@{/reports/add}" th:object="${bugForm}" method="post">
     <label for="title">Title</label>

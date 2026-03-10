@@ -46,6 +46,7 @@ public class BugFormController {
     @GetMapping("/")
     public String homePage(Model model){
         model.addAttribute("bugsReported", bugformService.getCount());
+        model.addAttribute("highPriorityBugs", bugformService.getHighPrioBugs());
         model.addAttribute("bugs", bugformService.getAllBugs());
         return "homescreen";
     }

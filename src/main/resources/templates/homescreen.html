@@ -7,14 +7,18 @@
 </head>
 <body>
 <div class="toplayer">
-    <div class="box">
-        <p th:text="${bugsReported}">Fallback text amount of bugs</p>
+    <div class="card">
+        <label for="totalbugs">Total amount of bugs</label>
+        <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p></br>
+        <label for="highpriobugs">High priority bugs</label>
+        <p id="highpriobugs" th:text="${highPriorityBugs}"></p></br>
     </div>
-    <div class="box">
-        <a href="redirect:/reports/add">Report a bug</a>
+    <div class="card">
+        <p>Lista av länkar till olika sidor kan va här</p>
+        <a th:href="@{/reports/add}">Report a bug</a>
     </div>
-    <div class="box">
-        <p>sökfält</p>
+    <div class="card">
+        <p th:field="${seachfield}">Sökfält</p>
     </div>
 </div>
 </nav>
