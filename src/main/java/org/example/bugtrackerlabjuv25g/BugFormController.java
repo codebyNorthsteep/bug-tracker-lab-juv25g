@@ -42,4 +42,11 @@ public class BugFormController {
         model.addAttribute("bugs", bugformService.getAllBugs());
         return "buglist";
     }
+
+    @GetMapping("/")
+    public String homePage(Model model){
+        model.addAttribute("bugsReported", bugformService.getCount());
+        model.addAttribute("bugs", bugformService.getAllBugs());
+        return "homescreen";
+    }
 }

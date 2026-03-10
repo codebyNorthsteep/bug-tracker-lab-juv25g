@@ -28,5 +28,8 @@ public class BugFormService {
         return bugRepository.findAll().stream().map(mapper::toDTO)
                 .toList();
     }
+    public long getCount(){
+        return bugRepository.count();
+    }
 
 }
