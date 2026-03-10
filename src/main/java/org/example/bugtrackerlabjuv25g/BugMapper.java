@@ -1,19 +1,34 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class BugMapper {
+    private static final Logger logger = LoggerFactory.getLogger(BugMapper.class);
+
+
     //Convert CreateBugDTO to BugEntity
     public Bug toEntity(CreateBugDTO createBugDTO) {
+        logger.debug("Creating bug: title='{}', priority='{}', devArea='{}'",
+                createBugDTO.title(),
+                createBugDTO.priority(),
+                createBugDTO.developerArea());
+
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = time.format(formatter);
+
         Bug bug = new Bug();
-        bug.setTitle(createBugDTO.getTitle());
-        bug.setDescription(createBugDTO.getDescription());
-        bug.setPriority(createBugDTO.getPriority());
-        bug.setDeveloperArea(createBugDTO.getDeveloperArea());
-        bug.setBugDate(LocalDateTime.now());
+        bug.setTitle(createBugDTO.title());
+        bug.setDescription(createBugDTO.description());
+        bug.setPriority(createBugDTO.priority());
+        bug.setDeveloperArea(createBugDTO.developerArea());
+        bug.setBugDate(formattedTime);
 
         return bug;
     }

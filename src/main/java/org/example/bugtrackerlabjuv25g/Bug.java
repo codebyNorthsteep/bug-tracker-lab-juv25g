@@ -23,9 +23,9 @@ public class Bug {
     private String description;
 
     @NotNull(message = "Date must be provided")
-    @PastOrPresent(message = "Date can not be in the future")
+    //@PastOrPresent(message = "Date can not be in the future")
     @Column(name = "bug_date")
-    private LocalDateTime bugDate;
+    private String bugDate;
 
     @NotNull(message = "Priority must be chosen")
     @Enumerated(EnumType.STRING)
@@ -79,11 +79,11 @@ public class Bug {
         this.title = title;
     }
 
-    public LocalDateTime getBugDate() {
+    public String getBugDate() {
         return bugDate;
     }
 
-    public void setBugDate(LocalDateTime bugDate) {
+    public void setBugDate(String bugDate) {
         this.bugDate = bugDate;
     }
 }

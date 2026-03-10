@@ -11,9 +11,10 @@ public class BugFormService {
     BugRepository bugRepository;
     BugMapper mapper;
 
-    public BugFormService(BugRepository bugRepository, BugMapper bugMapper){
+    //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
+    public BugFormService(BugRepository bugRepository, BugMapper mapper) {
         this.bugRepository = bugRepository;
-        this.mapper = bugMapper;
+        this.mapper = mapper;
     }
 
     public void saveReport(CreateBugDTO bugForm){

@@ -13,12 +13,12 @@
     <label for="descr">Description</label>
     <input type="text" th:field="*{description}" id="descr"></br>
     <label for="prioselect">Priority</label>
-    <select name="priority" id="prioselect">
+    <select th:field="*{priority}" id="prioselect">
             <option th:each="prio : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
                     th:value="${prio}" th:text="${prio}"></option>
     </select>
     <label for="dev_area">Development area</label>
-    <select name="developerArea" id="dev_area">
+    <select th:field="*{developerArea}" id="dev_area">
         <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.DevelopmentArea).values()}"
                 th:value="${dev}" th:text="${dev}"></option>
     </select>
