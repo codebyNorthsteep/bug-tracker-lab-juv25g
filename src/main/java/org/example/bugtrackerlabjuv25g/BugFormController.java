@@ -20,13 +20,14 @@ public class BugFormController {
     BugFormService bugformService;
     private static final Logger LOGGER = LoggerFactory.getLogger(BugFormController.class);
 
-    public BugFormController(BugFormService bugformService){
+    public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
     }
 
     @GetMapping("/reports/add")
-    public String showBugForm(Model model){
+    public String showBugForm(Model model, BindingResult bindingResult) {
         model.addAttribute("bugForm", new CreateBugDTO());
+        model.addAttribute("errors", bindingResult);
         return "create_view";
     }
 
@@ -36,18 +37,17 @@ public class BugFormController {
             LOGGER.info("{}", bindingResult.getFieldError().getDefaultMessage());
             return "create_view";
         }
-        bugformService.saveReport(bugForm);
         return "redirect:/reports/all";
     }
 
     @GetMapping("/reports/all")
-    public String showAllReports(Model model){
+    public String showAllReports(Model model) {
         model.addAttribute("bugs", bugformService.getAllBugs());
         return "buglist";
     }
 
     @GetMapping("/")
-    public String homePage(Model model){
+    public String homePage(Model model) {
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getHighPrioBugs());
         model.addAttribute("bugs", bugformService.getAllBugs());
