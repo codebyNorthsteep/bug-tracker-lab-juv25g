@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Bug Tracker</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="toplayer">
+    <div class="card">
+        <label for="totalbugs">Total amount of bugs</label>
+        <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p></br>
+        <label for="highpriobugs">High priority bugs</label>
+        <p id="highpriobugs" th:text="${highPriorityBugs}"></p></br>
+    </div>
+    <div class="card">
+        <p>Lista av länkar till olika sidor kan va här</p>
+        <a th:href="@{/reports/add}">Report a bug</a>
+    </div>
+    <div class="card">
+        <p th:field="${seachfield}">Sökfält</p>
+    </div>
+</div>
+</nav>
+<div>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Area</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${bugs.isEmpty()}">
+                <td colspan="3">No bugs found</td>
+            </tr>
+            <tr th:each="bug : ${bugs}">
+                <td><span th:text="${bug.id()}">Id</span></td>
+                <td><span th:text="${bug.title()}">Title</span></td>
+                <td><span th:text="${bug.description()}">Description</span></td>
+                <td><span th:text="${bug.priority()}">Description</span></td>
+                <td><span th:text="${bug.developerArea()}">Description</span></td>
+                <td><span th:text="${bug.bugDate()}">Description</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

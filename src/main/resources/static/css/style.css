@@ -1,0 +1,80 @@
+/* Grundinställningar */
+body {
+    background-color: #7a7a7a; /* Mörk bakgrund */
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+.toplayer {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+/* Box med skugga */
+.card {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 24px;
+    width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Mjuk skugga */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+}
+
+/* Hovringseffekt på boxen */
+.card:hover {
+    transform: translateY(-5px); /* Lyfter lite */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    border-color: #4a90e2; /* Diskret blå kant vid hovring */
+}
+
+/* Fina knappar */
+.btn {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, filter 0.2s;
+}
+
+.btn:hover {
+    background-color: #357abd;
+    filter: brightness(1.1);
+}
+
+/* Snygga länkar */
+.link {
+    color: #bb86fc; /* Lila accent som är vanlig i Dark Mode */
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #bb86fc;
+    transition: width 0.3s;
+}
+
+.link:hover {
+    color: #d7b7fd;
+}
+
+.link:hover::after {
+    width: 100%;
+}
