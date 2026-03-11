@@ -5,8 +5,7 @@ import jakarta.validation.constraints.*;
 public record UpdateBugDTO(@NotNull
                            Long id,
 
-                           @NotBlank(message = "Title can not be empty")
-                           @Size(min = 3, max = 100)
+                           @Title
                            String title,
 
                            @NotBlank(message = "Description can not be empty")

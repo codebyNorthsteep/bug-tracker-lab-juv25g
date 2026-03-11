@@ -1,6 +1,8 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import java.util.List;
 public class BugFormController {
 
     BugFormService bugformService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BugFormController.class);
 
     public BugFormController(BugFormService bugformService){
         this.bugformService = bugformService;
@@ -30,7 +33,7 @@ public class BugFormController {
     @PostMapping("/reports/add")
     public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            LOGGER.info("{}", bindingResult.getFieldError().getDefaultMessage());
             return "create_view";
         }
         bugformService.saveReport(bugForm);
