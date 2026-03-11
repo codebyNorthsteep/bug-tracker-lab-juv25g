@@ -1,15 +1,22 @@
 package org.example.bugtrackerlabjuv25g;
 
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BugFormService {
     BugRepository bugRepository;
     BugMapper mapper;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BugFormService.class);
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
     public BugFormService(BugRepository bugRepository, BugMapper mapper) {

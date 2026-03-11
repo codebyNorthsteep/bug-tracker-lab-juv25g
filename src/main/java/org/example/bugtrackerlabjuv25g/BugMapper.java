@@ -9,13 +9,13 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class BugMapper {
-    private static final Logger logger = LoggerFactory.getLogger(BugMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BugMapper.class);
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
     //Convert CreateBugDTO to BugEntity
     public Bug toEntity(CreateBugDTO createBugDTO) {
-        logger.debug("Creating bug: title='{}', priority='{}', devArea='{}'",
+        LOGGER.debug("Creating bug: title='{}', priority='{}', devArea='{}'",
                 createBugDTO.title(),
                 createBugDTO.priority(),
                 createBugDTO.developerArea());

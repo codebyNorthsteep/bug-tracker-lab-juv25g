@@ -1,6 +1,8 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,35 +18,36 @@ import java.util.List;
 public class BugFormController {
 
     BugFormService bugformService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BugFormController.class);
 
-    public BugFormController(BugFormService bugformService){
+    public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
     }
 
     @GetMapping("/reports/add")
-    public String showBugForm(Model model){
+    public String showBugForm(Model model, BindingResult bindingResult) {
         model.addAttribute("bugForm", new CreateBugDTO());
+        model.addAttribute("errors", bindingResult);
         return "create_view";
     }
 
     @PostMapping("/reports/add")
     public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            LOGGER.info("{}", bindingResult.getFieldError().getDefaultMessage());
             return "create_view";
         }
-        bugformService.saveReport(bugForm);
         return "redirect:/reports/all";
     }
 
     @GetMapping("/reports/all")
-    public String showAllReports(Model model){
+    public String showAllReports(Model model) {
         model.addAttribute("bugs", bugformService.getAllBugs());
         return "buglist";
     }
 
     @GetMapping("/")
-    public String homePage(Model model){
+    public String homePage(Model model) {
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getHighPrioBugs());
         model.addAttribute("bugs", bugformService.getAllBugs());
