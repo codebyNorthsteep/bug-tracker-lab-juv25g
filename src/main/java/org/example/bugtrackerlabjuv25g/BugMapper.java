@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class BugMapper {
     private static final Logger logger = LoggerFactory.getLogger(BugMapper.class);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
     //Convert CreateBugDTO to BugEntity
@@ -19,27 +20,26 @@ public class BugMapper {
                 createBugDTO.priority(),
                 createBugDTO.developerArea());
 
-        LocalDateTime time = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedTime = time.format(formatter);
-
         Bug bug = new Bug();
         bug.setTitle(createBugDTO.title());
         bug.setDescription(createBugDTO.description());
         bug.setPriority(createBugDTO.priority());
         bug.setDeveloperArea(createBugDTO.developerArea());
-        bug.setBugDate(formattedTime);
+        bug.setBugDate(LocalDateTime.now());
 
         return bug;
     }
 
     //From Entity to DTO for show
     public BugDTO toDTO(Bug bug) {
+        String formattedDate = bug.getBugDate() != null
+                ? bug.getBugDate().format(FORMATTER)
+                : null;
         return new BugDTO(
                 bug.getId(),
                 bug.getTitle(),
                 bug.getDescription(),
-                bug.getBugDate(),
+                formattedDate,
                 bug.getPriority(),
                 bug.getDeveloperArea()
         );

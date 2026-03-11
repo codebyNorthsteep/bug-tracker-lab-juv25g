@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr th:if="${bugs.isEmpty()}">
-        <td colspan="3">No bugs found</td>
+        <td colspan="6">No bugs found</td>
     </tr>
     <tr th:each="bug : ${bugs}">
         <td><span th:text="${bug.id}">Id</span></td>
