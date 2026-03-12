@@ -32,11 +32,11 @@ public class BugFormService {
             bugRepository.save(mapper.toEntity(bugForm));
     }
 
-    public Optional<Bug> getReport(long id){
+    public Optional<BugDTO> getReport(long id){
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
-            return bugRepository.findById(id);
+        return bugRepository.findById(id).map(mapper::toDTO);
     }
 
     public List<BugDTO> getAllBugs(){
