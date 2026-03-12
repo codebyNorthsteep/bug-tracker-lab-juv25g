@@ -35,7 +35,7 @@ public class BugFormController {
             return "create_view";
         }
         bugformService.saveReport(bugForm);
-        return "redirect:/reports/all";
+        return "redirect:/";
     }
 
     @GetMapping("/reports/all")
@@ -54,12 +54,12 @@ public class BugFormController {
 
     @GetMapping("/bugdetails")
     public String viewBugDetails(@RequestParam Long id, Model model){
-        if(bugformService.getReport(id).isEmpty()){
+        var bug = bugformService.getReport(id);
+        if(bug.isEmpty()){
             //handle 404
             return "redirect:/";
         }
-        var bug = bugformService.getReport(id).get();
-        model.addAttribute("bugdetail", bug);
+        model.addAttribute("bugdetail", bug.get());
         return "bugdetails";
     }
 }

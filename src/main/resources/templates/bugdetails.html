@@ -12,9 +12,9 @@
         <h2 th:text="|#${bugdetail.id()}|"></h2>
     </header>
     <nav class="bug-nav">
-        <span th:text="|Priority: ${bugdetail.priority()}|"/>
+        <span th:text="|Priority: ${bugdetail.priority()}|"></span>
         <div class="bug-nav-button">
-        <button th:onclick="">Edit knapp</button>
+        <button disabled th:onclick="">Edit knapp</button>
         <button th:onclick="location.href='/reports/add'">New Bug</button>
         </div>
     </nav>
