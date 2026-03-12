@@ -29,6 +29,12 @@ public class BugFormService {
         if (bugForm == null) {
             throw new IllegalArgumentException("bugForm must not be null");
         }
+        //Will throw another exception when GlobalExceptionHandler is usable
+        if (bugRepository.existsByTitleIgnoreCaseAndDevelopment(bugForm.title(), bugForm.development())) {
+            throw new IllegalArgumentException(
+                    "En bugg med denna titel finns redan registrerad för " + bugForm.development()
+            );
+        }
             bugRepository.save(mapper.toEntity(bugForm));
     }
 
@@ -41,6 +47,14 @@ public class BugFormService {
         Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
         mapper.updateBug(updateBugDTO, existingBug);
         bugRepository.save(existingBug);
+    }
+
+    public void deleteReport(long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("id must be greater than 0");
+        }
+
+            bugRepository.deleteById(id);
     }
 
     public Optional<BugDTO> getReport(long id){
