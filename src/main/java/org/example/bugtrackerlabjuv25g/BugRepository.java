@@ -13,6 +13,14 @@ public interface BugRepository extends ListCrudRepository<Bug, Long> {
 
     List<Bug> findAllByOrderByBugDateDesc();
 
-    @Query("SELECT b FROM Bug b ORDER BY CASE b.priority WHEN 'HIGH' THEN 0 WHEN 'MEDIUM' THEN 1 WHEN 'LOW' THEN 2 END")
+    @Query("""
+            SELECT b
+            FROM Bug b
+            ORDER BY CASE b.priority
+                WHEN org.example.bugtrackerlabjuv25g.Priority.HIGH THEN 0
+                WHEN org.example.bugtrackerlabjuv25g.Priority.MEDIUM THEN 1
+                WHEN org.example.bugtrackerlabjuv25g.Priority.LOW THEN 2
+            END
+            """)
     List<Bug> findAllByOrderByPriorityDesc();
 }
