@@ -8,13 +8,17 @@ import java.util.Optional;
 
 @Service
 public class BugFormService {
-    BugRepository bugRepository;
-    BugMapper mapper;
+    private final BugRepository bugRepository;
+    private final BugMapper mapper;
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
     public BugFormService(BugRepository bugRepository, BugMapper mapper) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
+    }
+
+    private List<BugDTO> mapList(List<Bug> bugs) {
+        return bugs.stream().map(mapper::toDTO).toList();
     }
 
     public void saveReport(CreateBugDTO bugForm){
@@ -26,17 +30,25 @@ public class BugFormService {
     }
 
     public List<BugDTO> getAllBugs(){
-        return bugRepository.findAll().stream().map(mapper::toDTO)
-                .toList();
+        return mapList(bugRepository.findAll());
     }
     public long getCount(){
         return bugRepository.count();
     }
 
-    public long getHighPrioBugs(){
-        return bugRepository.findAll().stream().filter(
-                bug -> bug.getPriority().equals(Priority.HIGH)
-        ).count();
+    public List<BugDTO> getBugsByPriority(Priority priority){
+        return mapList(bugRepository.findAllByPriority(priority));
     }
 
+    public List<BugDTO> getBugsByDeveloperArea(DevelopmentArea developmentArea){
+        return mapList(bugRepository.findAllByDeveloperArea(developmentArea));
+    }
+
+    public List<BugDTO> getAllBugsSortedByDate() {
+        return mapList(bugRepository.findAllByOrderByBugDateDesc());
+    }
+
+    public List<BugDTO> getAllBugsSortedByPriority() {
+        return mapList(bugRepository.findAllByOrderByPriorityDesc());
+    }
 }
