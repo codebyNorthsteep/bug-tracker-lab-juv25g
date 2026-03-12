@@ -13,7 +13,7 @@ public record CreateBugDTO(@NotBlank(message = "Title can not be empty")
                            Priority priority,
 
                            @NotNull(message = "Development area must be specified")
-                           DevelopmentArea developerArea) {
+                           Development development) {
 
     public CreateBugDTO() {
         this("", "", null, null);

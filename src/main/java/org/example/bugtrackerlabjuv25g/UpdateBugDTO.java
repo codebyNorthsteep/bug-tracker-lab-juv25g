@@ -17,5 +17,5 @@ public record UpdateBugDTO(@NotNull
                            Priority priority,
 
                            @NotNull(message = "Development area must be specified")
-                           DevelopmentArea developerArea) {
+                           Development development) {
 }
