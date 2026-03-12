@@ -24,10 +24,13 @@
     </div>
     <footer class="bug-footer">
         <div class="dev-area">
-            <strong>Bug origin:</strong>
+            <span>Bug origin:</span>
             <span th:text="${bugdetail.development()}"></span>
         </div>
+        <div class="bug-footer-button">
+        <button th:onclick="location.href='/'">Homescreen</button>
         <button type="button">Close bug / report as fixed</button>
+        </div>
     </footer>
 </div>
 </body>

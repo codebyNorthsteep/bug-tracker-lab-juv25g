@@ -34,8 +34,8 @@ body {
 }
 
 /* Fina knappar */
-.btn {
-    background-color: #4a90e2;
+button {
+    background-color: #1e1e1e;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -47,8 +47,8 @@ body {
     transition: background-color 0.2s, filter 0.2s;
 }
 
-.btn:hover {
-    background-color: #357abd;
+button:hover {
+    background-color: #535353;
     filter: brightness(1.1);
 }
 
@@ -90,7 +90,7 @@ body {
     align-items: center;
 }
 .bug-header h2 {
-
+    font-size: 30px;
 }
 
 .bug-nav {
@@ -98,10 +98,6 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-}
-.bug-nav-button {
-    display: flex;
-    justify-content: right;
 }
 
 .bug-box h3 {
