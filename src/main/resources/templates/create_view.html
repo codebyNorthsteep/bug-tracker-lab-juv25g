@@ -19,8 +19,8 @@
                     th:value="${prio}" th:text="${prio}"></option>
     </select>
     <label for="dev_area">Development area</label>
-    <select th:field="*{developerArea}" id="dev_area">
-        <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.DevelopmentArea).values()}"
+    <select th:field="*{development}" id="dev_area">
+        <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.Development).values()}"
                 th:value="${dev}" th:text="${dev}"></option>
     </select>
     <button type="submit">Save</button>

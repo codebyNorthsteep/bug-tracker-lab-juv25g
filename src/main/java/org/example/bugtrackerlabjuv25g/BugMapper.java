@@ -18,13 +18,13 @@ public class BugMapper {
         logger.debug("Creating bug: title='{}', priority='{}', devArea='{}'",
                 createBugDTO.title(),
                 createBugDTO.priority(),
-                createBugDTO.developerArea());
+                createBugDTO.development());
 
         Bug bug = new Bug();
         bug.setTitle(createBugDTO.title());
         bug.setDescription(createBugDTO.description());
         bug.setPriority(createBugDTO.priority());
-        bug.setDeveloperArea(createBugDTO.developerArea());
+        bug.setDevelopment(createBugDTO.development());
         bug.setBugDate(LocalDateTime.now());
 
         return bug;
@@ -41,7 +41,7 @@ public class BugMapper {
                 bug.getDescription(),
                 formattedDate,
                 bug.getPriority(),
-                bug.getDeveloperArea()
+                bug.getDevelopment()
         );
     }
 
@@ -49,6 +49,6 @@ public class BugMapper {
         bug.setTitle(updateBugDTO.title());
         bug.setDescription(updateBugDTO.description());
         bug.setPriority(updateBugDTO.priority());
-        bug.setDeveloperArea(updateBugDTO.developerArea());
+        bug.setDevelopment(updateBugDTO.development());
     }
 }

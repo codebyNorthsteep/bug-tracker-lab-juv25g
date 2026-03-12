@@ -33,18 +33,17 @@ public class Bug {
 
     @NotNull(message = "Development area must be chosen")
     @Enumerated(EnumType.STRING)
-    @Column(name = "development_area")
-    private DevelopmentArea developerArea;
+    private Development development;
 
     public Bug() {
     }
 
-    public DevelopmentArea getDeveloperArea() {
-        return developerArea;
+    public Development getDevelopment() {
+        return development;
     }
 
-    public void setDeveloperArea(DevelopmentArea developerArea) {
-        this.developerArea = developerArea;
+    public void setDevelopment(Development development) {
+        this.development = development;
     }
 
     public String getDescription() {
