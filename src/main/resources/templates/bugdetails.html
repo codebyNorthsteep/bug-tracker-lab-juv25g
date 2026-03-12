@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>result form</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
-    <form>
-        <p th:text="${bugdetail.title()}">Fall back text</p>
-        <p th:text="${bugdetail.description()}">Fall back text</p>
-        <p th:text="${bugdetail.priority()}">Fall back text</p>
-    </form>
-
+<div class="bug-container">
+    <header class="bug-header">
+        <h2 th:text="${bugdetail.title()}"></h2>
+        <h2 th:text="|#${bugdetail.id()}|"></h2>
+    </header>
+    <nav class="bug-nav">
+        <span th:text="|Priority: ${bugdetail.priority()}|"/>
+        <div class="bug-nav-button">
+        <button th:onclick="">Edit knapp</button>
+        <button th:onclick="location.href='/reports/add'">New Bug</button>
+        </div>
+    </nav>
+    <div class="bug-box">
+        <h3>Description</h3>
+        <p th:text="${bugdetail.description()}"></p>
+    </div>
+    <footer class="bug-footer">
+        <div class="dev-area">
+            <strong>Bug origin:</strong>
+            <span th:text="${bugdetail.development()}"></span>
+        </div>
+        <button type="button">Close bug / report as fixed</button>
+    </footer>
+</div>
 </body>
 </html>
