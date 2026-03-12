@@ -39,9 +39,11 @@
             <tr th:if="${bugs.isEmpty()}">
                 <td colspan="3">No bugs found</td>
             </tr>
-            <tr th:each="bug : ${bugs}">
+            <tr th:each="bug : ${bugs}"
+            th:onclick="|window.location.href='/bugdetails?id=' + ${bug.id()}|"
+            style="cursor: pointer;">
                 <td><span th:text="${bug.id()}">Id</span></td>
-                <td><a th:href="@{/bugdetails?id={id}(id=${bug.id()})}" th:text="${bug.title()}">Title</a></td>
+                <td><span th:text="${bug.title()}">Title</span></td>
                 <td><span th:text="${bug.description()}">Description</span></td>
                 <td><span th:text="${bug.priority()}">Description</span></td>
                 <td><span th:text="${bug.development()}">Description</span></td>
