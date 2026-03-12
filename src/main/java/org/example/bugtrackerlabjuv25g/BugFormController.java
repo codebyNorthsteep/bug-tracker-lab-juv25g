@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class BugFormController {
             return "create_view";
         }
         bugformService.saveReport(bugForm);
-        return "redirect:/reports/all";
+        return "redirect:/";
     }
 
     @GetMapping("/reports/all")
@@ -49,5 +50,16 @@ public class BugFormController {
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
         model.addAttribute("bugs", bugformService.getAllBugs());
         return "homescreen";
+    }
+
+    @GetMapping("/bugdetails")
+    public String viewBugDetails(@RequestParam Long id, Model model){
+        var bug = bugformService.getReport(id);
+        if(bug.isEmpty()){
+            //handle 404
+            return "redirect:/";
+        }
+        model.addAttribute("bugdetail", bug.get());
+        return "bugdetails";
     }
 }

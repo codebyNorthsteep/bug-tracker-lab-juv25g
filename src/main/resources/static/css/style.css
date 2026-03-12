@@ -34,8 +34,8 @@ body {
 }
 
 /* Fina knappar */
-.btn {
-    background-color: #4a90e2;
+button {
+    background-color: #1e1e1e;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -47,8 +47,8 @@ body {
     transition: background-color 0.2s, filter 0.2s;
 }
 
-.btn:hover {
-    background-color: #357abd;
+button:hover {
+    background-color: #535353;
     filter: brightness(1.1);
 }
 
@@ -77,4 +77,47 @@ body {
 
 .link:hover::after {
     width: 100%;
+}
+
+.bug-container {
+    max-width: 80%;
+    min-width: 50%;
+    margin: 0 auto;
+}
+.bug-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bug-header h2 {
+    font-size: 30px;
+}
+
+.bug-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.bug-box h3 {
+    font-size: 20px;
+    margin-top: 5px;
+    padding: 0px 5px;
+    border-radius: 5px;
+}
+
+.bug-box {
+    background-color: #1e1e1e;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.bug-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
 }
