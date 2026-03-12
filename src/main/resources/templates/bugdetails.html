@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>result form</title>
+</head>
+<body>
+    <form>
+        <p th:text="${bugdetail.title()}">Fall back text</p>
+        <p th:text="${bugdetail.description()}">Fall back text</p>
+        <p th:text="${bugdetail.priority()}">Fall back text</p>
+    </form>
+
+</body>
+</html>
