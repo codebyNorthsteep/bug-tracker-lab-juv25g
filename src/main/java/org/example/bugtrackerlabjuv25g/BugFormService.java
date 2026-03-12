@@ -32,6 +32,17 @@ public class BugFormService {
             bugRepository.save(mapper.toEntity(bugForm));
     }
 
+    public void updateReport(long existingId, UpdateBugDTO updateBugDTO) {
+        if (updateBugDTO == null) {
+            throw new IllegalArgumentException("updateDTO must not be null");
+        }
+
+        //Will throw another exception when GlobalExceptionHandler is usable
+        Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
+        mapper.updateBug(updateBugDTO, existingBug);
+        bugRepository.save(existingBug);
+    }
+
     public Optional<BugDTO> getReport(long id){
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
