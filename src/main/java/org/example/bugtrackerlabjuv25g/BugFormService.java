@@ -32,7 +32,7 @@ public class BugFormService {
         //Will throw another exception when GlobalExceptionHandler is usable
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopment(bugForm.title(), bugForm.development())) {
             throw new IllegalArgumentException(
-                    "En bugg med denna titel finns redan registrerad för " + bugForm.development()
+                    "A bug with this title already exists in development area: " + bugForm.development()
             );
         }
             bugRepository.save(mapper.toEntity(bugForm));
@@ -41,6 +41,9 @@ public class BugFormService {
     public void updateReport(long existingId, UpdateBugDTO updateBugDTO) {
         if (updateBugDTO == null) {
             throw new IllegalArgumentException("updateDTO must not be null");
+        }
+        if (!bugRepository.existsById(existingId)) {
+            throw new IllegalArgumentException("Cannot update bug: id " + existingId + " does not exist");
         }
 
         //Will throw another exception when GlobalExceptionHandler is usable
@@ -53,6 +56,9 @@ public class BugFormService {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
+        if (!bugRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cannot delete bug: id " + id + " does not exist");
+        }
 
             bugRepository.deleteById(id);
     }
@@ -60,6 +66,9 @@ public class BugFormService {
     public Optional<BugDTO> getReport(long id){
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
+        }
+        if (!bugRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cannot find bug: id " + id + " does not exist");
         }
         return bugRepository.findById(id).map(mapper::toDTO);
     }
