@@ -72,7 +72,7 @@ public class BugFormService {
 
     public void deleteReport(Long id) {
 
-        if (id <= 0 || id == null) {
+        if (id == null || id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
         if (!bugRepository.existsById(id)) {
@@ -83,7 +83,7 @@ public class BugFormService {
     }
 
     public Optional<BugDTO> getReport(Long id){
-        if (id <= 0 || id == null) {
+        if (id == null || id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
 
