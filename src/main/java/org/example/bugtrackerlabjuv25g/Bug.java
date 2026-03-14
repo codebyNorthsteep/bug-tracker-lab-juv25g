@@ -6,7 +6,8 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bugs")
+// Database-level constraint to prevent duplicate bug-title in the same development area.
+@Table(name = "bugs", uniqueConstraints = {@UniqueConstraint(columnNames = {"title", "development"}, name = "duplicated_bug_title_dev")})
 public class Bug {
 
     @Id
