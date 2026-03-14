@@ -48,8 +48,8 @@ public class BugFormService {
         if(existingId <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
-        if (updateBugDTO.id() != existingId) {
-            throw new IllegalArgumentException("Cannot update bug: id " + existingId + " does not exist");
+        if (updateBugDTO.id() == null || updateBugDTO.id() != existingId) {
+            throw new IllegalArgumentException("Path id (" + existingId + ") and payload id (" + updateBugDTO.id() + ") must match");
         }
 
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(
@@ -65,7 +65,7 @@ public class BugFormService {
         bugRepository.save(existingBug);
     }
 
-    public void deleteReport(long id) {
+    public void deleteReport(Long id) {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
@@ -76,7 +76,7 @@ public class BugFormService {
             bugRepository.deleteById(id);
     }
 
-    public Optional<BugDTO> getReport(long id){
+    public Optional<BugDTO> getReport(Long id){
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
