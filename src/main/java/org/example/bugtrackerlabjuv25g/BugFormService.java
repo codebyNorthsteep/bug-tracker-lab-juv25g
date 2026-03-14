@@ -52,6 +52,13 @@ public class BugFormService {
             throw new IllegalArgumentException("Cannot update bug: id " + existingId + " does not exist");
         }
 
+        if (bugRepository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(
+                updateBugDTO.title(), updateBugDTO.development(), existingId)) {
+            throw new IllegalArgumentException(
+                    "A bug with this title already exists in development area: " + updateBugDTO.development()
+            );
+        }
+
         //Will throw another exception when GlobalExceptionHandler is usable
         Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
         mapper.updateBug(updateBugDTO, existingBug);
@@ -73,9 +80,7 @@ public class BugFormService {
         if (id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
-        if (!bugRepository.existsById(id)) {
-            throw new IllegalArgumentException("Cannot find bug: id " + id + " does not exist");
-        }
+
         return bugRepository.findById(id).map(mapper::toDTO);
     }
 

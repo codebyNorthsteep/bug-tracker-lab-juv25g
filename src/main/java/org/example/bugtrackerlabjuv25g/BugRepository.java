@@ -9,6 +9,8 @@ public interface BugRepository extends ListCrudRepository<Bug, Long> {
 
     boolean existsByTitleIgnoreCaseAndDevelopment(String title, Development development);
 
+    boolean existsByTitleIgnoreCaseAndDevelopmentAndIdNot(String title, Development development, Long id);
+
     List<Bug> findAllByDevelopment(Development development);
 
     List<Bug> findAllByPriority(Priority priority);
