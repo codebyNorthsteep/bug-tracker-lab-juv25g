@@ -35,14 +35,20 @@ public class BugFormService {
                     "A bug with this title already exists in development area: " + bugForm.development()
             );
         }
+        try {
             bugRepository.save(mapper.toEntity(bugForm));
-    }
+        } catch (DataIntegrityViolationException ex) {
+            throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
+        }    }
 
     public void updateReport(long existingId, UpdateBugDTO updateBugDTO) {
         if (updateBugDTO == null) {
             throw new IllegalArgumentException("updateDTO must not be null");
         }
-        if (!bugRepository.existsById(existingId)) {
+        if(existingId <= 0) {
+            throw new IllegalArgumentException("id must be greater than 0");
+        }
+        if (updateBugDTO.id() != existingId) {
             throw new IllegalArgumentException("Cannot update bug: id " + existingId + " does not exist");
         }
 
