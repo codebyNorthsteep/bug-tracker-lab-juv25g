@@ -52,6 +52,9 @@ public class BugFormService {
             throw new IllegalArgumentException("Path id (" + existingId + ") and payload id (" + updateBugDTO.id() + ") must match");
         }
 
+        //Will throw another exception when GlobalExceptionHandler is usable
+        Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
+
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(
                 updateBugDTO.title(), updateBugDTO.development(), existingId)) {
             throw new IllegalArgumentException(
@@ -59,8 +62,6 @@ public class BugFormService {
             );
         }
 
-        //Will throw another exception when GlobalExceptionHandler is usable
-        Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
         mapper.updateBug(updateBugDTO, existingBug);
         try {
             bugRepository.save(existingBug);
