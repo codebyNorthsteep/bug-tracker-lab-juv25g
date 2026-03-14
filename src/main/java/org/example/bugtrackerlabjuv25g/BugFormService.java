@@ -62,11 +62,16 @@ public class BugFormService {
         //Will throw another exception when GlobalExceptionHandler is usable
         Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
         mapper.updateBug(updateBugDTO, existingBug);
-        bugRepository.save(existingBug);
+        try {
+            bugRepository.save(existingBug);
+        } catch (DataIntegrityViolationException ex) {
+            throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
+        }
     }
 
     public void deleteReport(Long id) {
-        if (id <= 0) {
+
+        if (id <= 0 || id == null) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
         if (!bugRepository.existsById(id)) {
@@ -77,7 +82,7 @@ public class BugFormService {
     }
 
     public Optional<BugDTO> getReport(Long id){
-        if (id <= 0) {
+        if (id <= 0 || id == null) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
 
