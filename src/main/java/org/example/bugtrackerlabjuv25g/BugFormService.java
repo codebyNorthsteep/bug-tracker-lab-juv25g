@@ -1,8 +1,5 @@
 package org.example.bugtrackerlabjuv25g;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +22,7 @@ public class BugFormService {
         return bugs.stream().map(mapper::toDTO).toList();
     }
 
-    public void saveReport(CreateBugDTO bugForm){
+    public void saveReport(CreateBugDTO bugForm) {
         if (bugForm == null) {
             throw new IllegalArgumentException("bugForm must not be null");
         }
@@ -39,13 +36,14 @@ public class BugFormService {
             bugRepository.save(mapper.toEntity(bugForm));
         } catch (DataIntegrityViolationException ex) {
             throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
-        }    }
+        }
+    }
 
     public void updateReport(long existingId, UpdateBugDTO updateBugDTO) {
         if (updateBugDTO == null) {
             throw new IllegalArgumentException("updateDTO must not be null");
         }
-        if(existingId <= 0) {
+        if (existingId <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
         if (updateBugDTO.id() == null || updateBugDTO.id() != existingId) {
@@ -79,10 +77,10 @@ public class BugFormService {
             throw new IllegalArgumentException("Cannot delete bug: id " + id + " does not exist");
         }
 
-            bugRepository.deleteById(id);
+        bugRepository.deleteById(id);
     }
 
-    public Optional<BugDTO> getReport(Long id){
+    public Optional<BugDTO> getReport(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
@@ -90,27 +88,28 @@ public class BugFormService {
         return bugRepository.findById(id).map(mapper::toDTO);
     }
 
-    public List<BugDTO> getAllBugs(){
-            return mapList(bugRepository.findAll());
-    }
-    public long getCount(){
-            return bugRepository.count();
+    public List<BugDTO> getAllBugs() {
+        return mapList(bugRepository.findAll());
     }
 
-    public List<BugDTO> getBugsByPriority(Priority priority){
-            return mapList(bugRepository.findAllByPriority(priority));
+    public long getCount() {
+        return bugRepository.count();
     }
 
-    public List<BugDTO> getBugsByDevelopment(Development development){
-            return mapList(bugRepository.findAllByDevelopment(development));
+    public List<BugDTO> getBugsByPriority(Priority priority) {
+        return mapList(bugRepository.findAllByPriority(priority));
+    }
+
+    public List<BugDTO> getBugsByDevelopment(Development development) {
+        return mapList(bugRepository.findAllByDevelopment(development));
     }
 
     public List<BugDTO> getAllBugsSortedByDate() {
-            return mapList(bugRepository.findAllByOrderByBugDateDesc());
+        return mapList(bugRepository.findAllByOrderByBugDateDesc());
     }
 
     public List<BugDTO> getAllBugsSortedByPriority() {
-            return mapList(bugRepository.findAllByOrderByPriorityDesc());
+        return mapList(bugRepository.findAllByOrderByPriorityDesc());
     }
 
 }
