@@ -28,7 +28,12 @@ public class BugFormController {
             System.out.println("Error has occured! " + bindingResult.toString());
             return "create_view";
         }
-        bugformService.saveReport(bugForm);
+        try {
+            bugformService.saveReport(bugForm);
+        } catch (IllegalArgumentException ex) {
+            bindingResult.rejectValue("title", "error.bugForm", ex.getMessage());
+            return "create_view";
+        }
         return "redirect:/";
     }
 
@@ -71,7 +76,12 @@ public class BugFormController {
             System.out.println("Error has occured! " + bindingResult.toString());
             return "edit_view";
         }
-        bugformService.updateReport(id, updateForm);
+        try {
+            bugformService.updateReport(id, updateForm);
+        } catch (IllegalArgumentException e) {
+            bindingResult.rejectValue("title", "error.bugForm", e.getMessage());
+            return "edit_view";
+        }
         return "redirect:/bugdetails?id=" + id;
     }
 
