@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -49,4 +46,33 @@ public class BugFormController {
         model.addAttribute("bugdetail", bug);
         return "details";
     }
+
+    @GetMapping("/bugdetails/edit")
+    public String showEditForm(@RequestParam Long id, Model model) {
+        BugDTO bug = bugformService.getReport(id);
+        //Convert BugDTO to UpdateBugDTO to fill out form with current values
+        UpdateBugDTO updateForm = new UpdateBugDTO(
+                bug.id(),
+                bug.title(),
+                bug.description(),
+                bug.priority(),
+                bug.development()
+        );
+        model.addAttribute("bugForm", updateForm);
+        return "edit_view";
+    }
+
+    @PostMapping("/bugdetails/edit/{id}")
+    public String postEditForm(@PathVariable("id") Long id,
+                               @ModelAttribute("bugForm") @Valid UpdateBugDTO updateForm,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Error has occured! " + bindingResult.toString());
+            return "edit_view";
+        }
+        bugformService.updateReport(id, updateForm);
+        return "redirect:/bugdetails?id=" + id;
+    }
+
 }
