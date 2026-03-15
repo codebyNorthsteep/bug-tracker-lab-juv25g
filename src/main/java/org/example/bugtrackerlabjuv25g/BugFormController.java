@@ -15,19 +15,19 @@ public class BugFormController {
 
     BugFormService bugformService;
 
-    public BugFormController(BugFormService bugformService){
+    public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
     }
 
     @GetMapping("/reports/add")
-    public String showBugForm(Model model){
+    public String showBugForm(Model model) {
         model.addAttribute("bugForm", new CreateBugDTO());
         return "create_view";
     }
 
     @PostMapping("/reports/add")
-    public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
+    public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             System.out.println("Error has occured! " + bindingResult.toString());
             return "create_view";
         }
@@ -36,7 +36,7 @@ public class BugFormController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model){
+    public String homePage(Model model) {
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
         model.addAttribute("bugs", bugformService.getAllBugs());
@@ -44,13 +44,9 @@ public class BugFormController {
     }
 
     @GetMapping("/bugdetails")
-    public String viewBugDetails(@RequestParam Long id, Model model){
-        var bug = bugformService.getReport(id);
-        if(bug.isEmpty()){
-            //handle 404
-            return "redirect:/";
-        }
-        model.addAttribute("bugdetail", bug.get());
+    public String viewBugDetails(@RequestParam Long id, Model model) {
+        BugDTO bug = bugformService.getReport(id);
+        model.addAttribute("bugdetail", bug);
         return "details";
     }
 }

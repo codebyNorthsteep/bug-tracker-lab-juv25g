@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bug Report</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<nav>...</nav>
+<h1>Something went wrong</h1>
+<p th:text="${errorMessage}"></p>
+<a th:href="@{/}">
+    <button>Go to homepage</button>
+</a>
+</body>
+</html>

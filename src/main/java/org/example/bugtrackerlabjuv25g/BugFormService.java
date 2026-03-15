@@ -1,10 +1,10 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BugFormService {
@@ -51,7 +51,7 @@ public class BugFormService {
         }
 
         //Will throw another exception when GlobalExceptionHandler is usable
-        Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new IllegalArgumentException("Bug with id " + existingId + " not found"));
+        Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new ResourceNotFound("Bug with id " + existingId + " not found"));
 
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(
                 updateBugDTO.title(), updateBugDTO.development(), existingId)) {
@@ -74,18 +74,20 @@ public class BugFormService {
             throw new IllegalArgumentException("id must be greater than 0");
         }
         if (!bugRepository.existsById(id)) {
-            throw new IllegalArgumentException("Cannot delete bug: id " + id + " does not exist");
+            throw new ResourceNotFound("Cannot delete bug: id " + id + " does not exist");
         }
 
         bugRepository.deleteById(id);
     }
 
-    public Optional<BugDTO> getReport(Long id) {
+    public BugDTO getReport(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
 
-        return bugRepository.findById(id).map(mapper::toDTO);
+        return bugRepository.findById(id)
+                .map(mapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFound("Bug with id " + id + " not found"));
     }
 
     public List<BugDTO> getAllBugs() {

@@ -86,7 +86,7 @@ class BugFormControllerTest {
     @DisplayName("GET Bug details returns with correct view, attribute and status")
     void viewBugDetails() throws Exception{
         var bug = Optional.of(new BugDTO(1L,"test","desc", "date", Priority.LOW, Development.BACKEND));
-        Mockito.when(bugFormService.getReport(1)).thenReturn(bug);
+        Mockito.when(bugFormService.getReport(1L)).thenReturn(bug);
         mockMvc.perform(get("/bugdetails")
                         .param("id", "1"))
                 .andExpect(status().isOk())
