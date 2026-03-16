@@ -7,11 +7,14 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 40px;
+    width: 80%;
+    margin: 0 auto;
 }
 .toplayer {
     display: flex;
     flex-direction: row;
     padding: 10px;
+    width: 100%;
 }
 
 /* Box med skugga */
@@ -19,12 +22,51 @@ body {
     background-color: #1e1e1e;
     border-radius: 12px;
     padding: 24px;
-    width: 350px;
+    width: 33%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Mjuk skugga */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 20px;
     border: 1px solid #333;
+    overflow: hidden;
 }
+
+.card p {
+    font-weight: bold;
+}
+
+.search-container {
+    justify-content: left;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+}
+
+.search-form {
+    display: flex;
+    gap: 0;
+}
+
+.search-input {
+    flex-grow: 1;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #535353;
+    color: white;
+
+}
+
+.search-button:hover {
+    background-color: #535353;
+    filter: brightness(1.1);
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+
 
 /* Hovringseffekt på boxen */
 .card:hover {
@@ -78,6 +120,60 @@ button:hover {
 .link:hover::after {
     width: 100%;
 }
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px #4a90e2;
+}
+
+.table-content {
+    align-content: center;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+}
+
+tbody tr:nth-child(even) {
+    background-color: #535353;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-id {
+    width: 1rem;
+}
+
+.col-title {
+    width: 20rem;
+}
+
+.col-desc {
+    width: 40vw;
+}
+
+.col-priority {
+    width: 8vw;
+}
+
+.col-area {
+    width: 10vw;
+}
+
+.col-date {
+    width: 15vw;
+}
+
 
 .bug-container {
     max-width: 80%;

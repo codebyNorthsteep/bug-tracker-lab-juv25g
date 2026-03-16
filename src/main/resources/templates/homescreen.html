@@ -9,38 +9,41 @@
 <div class="toplayer">
     <div class="card">
         <label for="totalbugs">Total amount of bugs</label>
-        <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p></br>
+        <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p><br/>
+    </div>
+    <div class="card">
         <label for="highpriobugs">High priority bugs</label>
         <p id="highpriobugs" th:text="${highPriorityBugs}"></p></br>
     </div>
     <div class="card">
-        <p>Lista av länkar till olika sidor kan va här</p>
-        <a th:href="@{/reports/add}">Report a bug</a>
-    </div>
-    <div class="card">
-        <form th:action="@{/search}" method="get">
-            <input type="text" name="input" placeholder="Search by title or description"/>
-            <input type="submit" value="Search"/>
+        <div class="search-container">
+            <form th:action="@{/search}" method="get" class="search-form">
+                <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
         </form>
+        </div>
+        <div class="card-buttons">
+            <button th:onclick="location.href='/'">Home</button>
+            <button th:onclick="location.href='/reports/add'">Report bug</button>
+        </div>
     </div>
 </div>
 </nav>
-<div>
-    <div>
+<div class="content">
+    <div class="table-content">
         <table>
             <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Priority</th>
-                <th>Area</th>
-                <th>Created</th>
+                <th class="col-id">Id</th>
+                <th class="col-title">Title</th>
+                <th class="col-description">Description</th>
+                <th class="col-priority">Priority</th>
+                <th class="col-area">Area</th>
+                <th class="col-date">Created</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${bugs.isEmpty()}">
-                <td colspan="3">No bugs found</td>
+                <td colspan="6">No bugs found</td>
             </tr>
             <tr th:each="bug : ${bugs}"
             th:onclick="|window.location.href='/bugdetails?id=' + ${bug.id()}|"
