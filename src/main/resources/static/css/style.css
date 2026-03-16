@@ -150,6 +150,23 @@ th, td {
     text-overflow: ellipsis;
 }
 
+.page-container {
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.page-buttons {
+    background-color: #1e1e1e;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.page-buttons:hover {
+    background-color: #535353;
+}
+
 .col-id {
     width: 1rem;
 }

@@ -2,6 +2,9 @@ package org.example.bugtrackerlabjuv25g;
 
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,15 +15,21 @@ public class BugFormService {
 
     private final BugRepository bugRepository;
     private final BugMapper mapper;
+    private final PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer;
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
-    public BugFormService(BugRepository bugRepository, BugMapper mapper) {
+    public BugFormService(BugRepository bugRepository, BugMapper mapper, PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
+        this.pageableCustomizer = pageableCustomizer;
     }
 
     private List<BugDTO> mapList(List<Bug> bugs) {
         return bugs.stream().map(mapper::toDTO).toList();
+    }
+
+    private Page<BugDTO> mapPage(Page<Bug> bugs) {
+        return bugs.map(mapper::toDTO);
     }
 
     public void saveReport(CreateBugDTO bugForm) {
@@ -101,6 +110,10 @@ public class BugFormService {
 
     public List<BugDTO> getAllBugs() {
         return mapList(bugRepository.findAll());
+    }
+
+    public Page<BugDTO> getPagedBugs(Pageable pageable) {
+        return mapPage(bugRepository.findAll(pageable));
     }
 
     public long getCount() {
