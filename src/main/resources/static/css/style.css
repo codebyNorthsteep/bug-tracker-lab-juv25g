@@ -151,8 +151,11 @@ th, td {
 }
 
 .page-container {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
+    gap: 15px;
 }
 
 .page-buttons {
@@ -161,6 +164,22 @@ th, td {
     padding: 8px;
     border-radius: 5px;
     transition: background 0.3s;
+}
+
+.page-size select {
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid #1e1e1e;
+    background-color: #1e1e1e;
+    color: white;
+    font-size: 1rem;
+    padding: 8px;
+}
+
+.page-size select:hover {
+    background-color: #535353;
+    border: solid #535353;
+
 }
 
 .page-buttons:hover {

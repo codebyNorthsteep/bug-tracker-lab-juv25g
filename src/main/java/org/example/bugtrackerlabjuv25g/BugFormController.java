@@ -54,6 +54,7 @@ public class BugFormController {
         model.addAttribute("bugs", paged);
         model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
         return "homescreen";
     }
 
