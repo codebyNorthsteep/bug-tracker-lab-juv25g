@@ -4,16 +4,19 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 public class BugFormController {
 
+    private final MethodValidationPostProcessor methodValidationPostProcessor;
     BugFormService bugformService;
 
-    public BugFormController(BugFormService bugformService) {
+    public BugFormController(BugFormService bugformService, MethodValidationPostProcessor methodValidationPostProcessor) {
         this.bugformService = bugformService;
+        this.methodValidationPostProcessor = methodValidationPostProcessor;
     }
 
     @GetMapping("/reports/add")
@@ -83,6 +86,18 @@ public class BugFormController {
             return "edit_view";
         }
         return "redirect:/bugdetails?id=" + id;
+    }
+
+    @GetMapping("/search")
+    public String getSearchResult(@RequestParam(required = false) String input, Model model) {
+        if (input == null || input.isEmpty()) {
+            return "redirect:/";
+        } else {
+            model.addAttribute("bugs", bugformService.findBugsByTitleOrDescription(input));
+        }
+        model.addAttribute("bugsReported", bugformService.getCount());
+        model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
+        return "homescreen";
     }
 
 }

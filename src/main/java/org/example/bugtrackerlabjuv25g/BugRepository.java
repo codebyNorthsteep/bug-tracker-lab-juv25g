@@ -27,4 +27,8 @@ public interface BugRepository extends ListCrudRepository<Bug, Long> {
             END
             """)
     List<Bug> findAllByOrderByPriorityDesc();
+
+    List<Bug> findBugsByTitleContainingIgnoreCase(String title);
+
+    List<Bug> findBugsByDescriptionContainingIgnoreCase(String description);
 }

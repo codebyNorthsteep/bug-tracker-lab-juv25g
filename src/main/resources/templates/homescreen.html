@@ -18,7 +18,10 @@
         <a th:href="@{/reports/add}">Report a bug</a>
     </div>
     <div class="card">
-        <p th:field="${seachfield}">Sökfält</p>
+        <form th:action="@{/search}" method="get">
+            <input type="text" name="input" placeholder="Search by title or description"/>
+            <input type="submit" value="Search"/>
+        </form>
     </div>
 </div>
 </nav>

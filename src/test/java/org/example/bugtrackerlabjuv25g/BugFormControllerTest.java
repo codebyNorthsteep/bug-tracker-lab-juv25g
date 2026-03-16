@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,10 +23,13 @@ class BugFormControllerTest {
     MockMvc mockMvc;
     @Mock
     BugFormService bugFormService;
+    @Mock
+    MethodValidationPostProcessor methodValidationPostProcessor;
+
 
     @BeforeEach
     void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new BugFormController(bugFormService))
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new BugFormController(bugFormService, methodValidationPostProcessor))
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }

@@ -4,6 +4,7 @@ import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -88,6 +89,14 @@ public class BugFormService {
         return bugRepository.findById(id)
                 .map(mapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFound("Bug with id " + id + " not found"));
+    }
+
+    public List<BugDTO> findBugsByTitleOrDescription(String input) {
+        List<BugDTO> searchList = new ArrayList<>(mapList(bugRepository.findBugsByTitleContainingIgnoreCase(input)));
+        if (searchList.isEmpty()) {
+            searchList.addAll(mapList(bugRepository.findBugsByDescriptionContainingIgnoreCase(input)));
+        }
+        return searchList;
     }
 
     public List<BugDTO> getAllBugs() {
