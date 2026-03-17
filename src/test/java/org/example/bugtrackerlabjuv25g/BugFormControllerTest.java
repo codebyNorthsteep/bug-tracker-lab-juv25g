@@ -97,4 +97,15 @@ class BugFormControllerTest {
                 .andExpect(view().name("details"));
 
     }
+
+    @Test
+    @DisplayName("GET Edit form with non existent bug should throw ResourceNotFound")
+    void showEditFormNotFound() throws Exception {
+        Mockito.when(bugFormService.getReport(1L)).thenThrow(new ResourceNotFound("Bug with id 1 not found"));
+        mockMvc.perform(get("/bugdetails/edit")
+                        .param("id", "1"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error"));
+    }
 }
+
