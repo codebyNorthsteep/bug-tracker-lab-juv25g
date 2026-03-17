@@ -77,7 +77,6 @@ body {
 
 /* Fina knappar */
 button, .buttons {
-    all: unset;
     background-color: #1e1e1e;
     color: white;
     border: none;
@@ -218,15 +217,15 @@ th, td {
 
 .bug-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2vh;
 }
 
 .bug-box h3 {
     font-size: 20px;
     margin-top: 5px;
-    padding: 0px 5px;
+    padding: 0 5px;
     border-radius: 5px;
 }
 
@@ -238,11 +237,30 @@ th, td {
     font-size: 16px;
 }
 
+.description-box-footer {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 1vw;
+}
+
+.tiny-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.description-data-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    margin-bottom: 1vh;
+}
+
 .bug-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 2vh;
 }
 
 .error {

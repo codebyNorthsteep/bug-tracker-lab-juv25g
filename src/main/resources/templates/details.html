@@ -12,25 +12,33 @@
         <h2 th:text="|#${bugdetail.id()}|"></h2>
     </header>
     <nav class="bug-nav">
-        <span th:text="|Priority: ${bugdetail.priority()}|"></span>
+
         <div class="bug-nav-button">
-            <button th:onclick="|location.href='/bugdetails/edit?id=' + ${bugdetail.id()}|">Edit report</button>
+            <button th:onclick="location.href='/'">Homescreen</button>
             <button th:onclick="location.href='/reports/add'">Report new Bug</button>
         </div>
     </nav>
     <div class="bug-box">
         <h3>Description</h3>
         <p th:text="${bugdetail.description()}"></p>
-        <h5>Reported at</h5>
-        <p th:text="${bugdetail.bugDate()}"></p>
+        <div class="description-box-footer">
+            <div class="description-data-boxes">
+                <span class="tiny-title">Reported at</span>
+                <span th:text="${bugdetail.bugDate()}"></span>
+            </div>
+            <div class="description-data-boxes">
+                <span class="tiny-title">Bug origin</span>
+                <span th:text="${bugdetail.development()}"></span>
+            </div>
+            <div class="description-data-boxes">
+                <span class="tiny-title">Priority</span>
+                <span th:text="${bugdetail.priority()}"></span>
+            </div>
+        </div>
     </div>
     <footer class="bug-footer">
-        <div class="dev-area">
-            <span>Bug origin:</span>
-            <span th:text="${bugdetail.development()}"></span>
-        </div>
         <div class="bug-footer-button">
-            <button th:onclick="location.href='/'">Homescreen</button>
+            <button th:onclick="|location.href='/bugdetails/edit?id=' + ${bugdetail.id()}|">Edit report</button>
             <button th:onclick="|location.href='/bugdetails/delete/confirm?id=' + ${bugdetail.id()}|">Close bug / report
                 as fixed
             </button>
