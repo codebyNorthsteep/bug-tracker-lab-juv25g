@@ -6,11 +6,19 @@
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<nav>...</nav>
-<h1>Something went wrong</h1>
-<p th:text="${errorMessage}"></p>
-<a th:href="@{/}">
-    <button>Go to homepage</button>
-</a>
+<div class="bug-container">
+    <header class="bug-header">
+        <h2 th:text="${errorTitle != null ? errorTitle : 'Error'}">Error Occurred</h2>
+    </header>
+    <div class="bug-box">
+        <h3>Oops!</h3>
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <footer class="bug-footer">
+        <div class="bug-footer-button">
+            <button th:onclick="location.href='/'">Go to Homepage</button>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

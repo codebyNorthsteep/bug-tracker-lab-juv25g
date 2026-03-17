@@ -255,8 +255,28 @@ th, td {
 }
 
 .error {
-    color: red;
+    color: #ff6b6b;
     font-size: 12px;
     display: block;
     margin-top: 5px;
+}
+
+.btn-danger {
+    background-color: #a00;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-danger:hover {
+    background-color: #d60000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.btn-danger:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }

@@ -4,22 +4,22 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 public class BugFormController {
+    private static final Logger logger = LoggerFactory.getLogger(BugFormController.class);
 
-    private final MethodValidationPostProcessor methodValidationPostProcessor;
     BugFormService bugformService;
 
-    public BugFormController(BugFormService bugformService, MethodValidationPostProcessor methodValidationPostProcessor) {
+    public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
-        this.methodValidationPostProcessor = methodValidationPostProcessor;
     }
 
     @GetMapping("/reports/add")
@@ -31,12 +31,13 @@ public class BugFormController {
     @PostMapping("/reports/add")
     public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            logger.debug("Validation errors in bug creation form: {} error(s)", bindingResult.getErrorCount());
             return "create_view";
         }
         try {
             bugformService.saveReport(bugForm);
         } catch (IllegalArgumentException ex) {
+            //Red marking in form when trying to update with invalid data, duplicate title in same development area
             bindingResult.rejectValue("title", "error.bugForm", ex.getMessage());
             return "create_view";
         }
@@ -86,16 +87,31 @@ public class BugFormController {
                                BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            logger.debug("Validation errors in bug edit form for id {}: {} error(s)", id, bindingResult.getErrorCount());
             return "edit_view";
         }
         try {
             bugformService.updateReport(id, updateForm);
         } catch (IllegalArgumentException e) {
+            //Red marking in form when trying to update with invalid data, duplicate title in same development area
             bindingResult.rejectValue("title", "error.bugForm", e.getMessage());
             return "edit_view";
         }
         return "redirect:/bugdetails?id=" + id;
+    }
+
+    @GetMapping("/bugdetails/delete/confirm")
+    public String confirmDelete(@RequestParam Long id, Model model) {
+        BugDTO bug = bugformService.getReport(id);
+        model.addAttribute("bugdetail", bug);
+
+        return "confirm_delete";
+    }
+
+    @PostMapping("/bugdetails/delete")
+    public String deleteReport(@RequestParam Long id) {
+        bugformService.deleteReport(id);
+        return "redirect:/";
     }
 
     @GetMapping("/search")

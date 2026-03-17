@@ -30,8 +30,10 @@
             <span th:text="${bugdetail.development()}"></span>
         </div>
         <div class="bug-footer-button">
-        <button th:onclick="location.href='/'">Homescreen</button>
-        <button type="button">Close bug / report as fixed</button>
+            <button th:onclick="location.href='/'">Homescreen</button>
+            <button th:onclick="|location.href='/bugdetails/delete/confirm?id=' + ${bugdetail.id()}|">Close bug / report
+                as fixed
+            </button>
         </div>
     </footer>
 </div>
