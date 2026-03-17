@@ -34,6 +34,7 @@ public class BugFormController {
         try {
             bugformService.saveReport(bugForm);
         } catch (IllegalArgumentException ex) {
+            //Red marking in form when trying to update with invalid data, duplicate title in same development area
             bindingResult.rejectValue("title", "error.bugForm", ex.getMessage());
             return "create_view";
         }
@@ -82,6 +83,7 @@ public class BugFormController {
         try {
             bugformService.updateReport(id, updateForm);
         } catch (IllegalArgumentException e) {
+            //Red marking in form when trying to update with invalid data, duplicate title in same development area
             bindingResult.rejectValue("title", "error.bugForm", e.getMessage());
             return "edit_view";
         }
