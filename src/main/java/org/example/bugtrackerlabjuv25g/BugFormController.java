@@ -1,6 +1,8 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class BugFormController {
+    private static final Logger logger = LoggerFactory.getLogger(BugFormController.class);
 
     BugFormService bugformService;
 
@@ -25,7 +28,7 @@ public class BugFormController {
     @PostMapping("/reports/add")
     public String postBugForm(@ModelAttribute("bugForm") @Valid CreateBugDTO bugForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            logger.debug("Validation errors in bug creation form: {} error(s)", bindingResult.getErrorCount());
             return "create_view";
         }
         try {
@@ -73,7 +76,7 @@ public class BugFormController {
                                BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Error has occured! " + bindingResult.toString());
+            logger.debug("Validation errors in bug edit form for id {}: {} error(s)", id, bindingResult.getErrorCount());
             return "edit_view";
         }
         try {
