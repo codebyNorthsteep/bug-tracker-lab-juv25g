@@ -8,7 +8,6 @@ body {
     align-items: center;
     padding: 40px;
 }
-
 .toplayer {
     display: flex;
     flex-direction: row;
@@ -85,13 +84,11 @@ button:hover {
     min-width: 50%;
     margin: 0 auto;
 }
-
 .bug-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .bug-header h2 {
     font-size: 30px;
 }
@@ -133,7 +130,7 @@ button:hover {
 }
 
 .btn-danger {
-    background-color: #d60000;
+    background-color: #a00;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -143,7 +140,7 @@ button:hover {
 }
 
 .btn-danger:hover {
-    background-color: #f00;
+    background-color: #d60000;
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
 }
 
