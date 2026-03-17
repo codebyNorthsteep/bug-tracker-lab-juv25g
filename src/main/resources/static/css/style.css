@@ -128,3 +128,18 @@ button:hover {
     display: block;
     margin-top: 5px;
 }
+
+.btn-danger {
+    background-color: #a00;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-danger:hover {
+    background-color: #f00;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}

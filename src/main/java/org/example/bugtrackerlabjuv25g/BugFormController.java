@@ -85,4 +85,18 @@ public class BugFormController {
         return "redirect:/bugdetails?id=" + id;
     }
 
+    @GetMapping("/bugdetails/delete/confirm")
+    public String confirmDelete(@RequestParam Long id, Model model) {
+        BugDTO bug = bugformService.getReport(id);
+        model.addAttribute("bugdetail", bug);
+
+        return "confirm_delete";
+    }
+
+    @PostMapping("/bugdetails/delete")
+    public String deleteReport(@RequestParam Long id) {
+        bugformService.deleteReport(id);
+        return "redirect:/";
+    }
+
 }
