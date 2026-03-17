@@ -1,5 +1,7 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.example.bugtrackerlabjuv25g.exception.GlobalExceptionHandler;
+import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,8 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +25,9 @@ class BugFormControllerTest {
 
     @BeforeEach
     void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new BugFormController(bugFormService)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new BugFormController(bugFormService))
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
 
@@ -74,19 +76,20 @@ class BugFormControllerTest {
     }
 
     @Test
-    @DisplayName("GET Bug details with non existent bug should redirect")
-    void viewBugDetailsRedirect() throws Exception {
+    @DisplayName("GET Bug details with non existent bug should throw ResourceNotFound")
+    void viewBugDetailsNotFound() throws Exception {
+        Mockito.when(bugFormService.getReport(1L)).thenThrow(new ResourceNotFound("Bug with id 1 not found"));
         mockMvc.perform(get("/bugdetails")
-                //@RequestParam data
                 .param("id", "1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk())
+                .andExpect(view().name("error"));
     }
 
     @Test
     @DisplayName("GET Bug details returns with correct view, attribute and status")
     void viewBugDetails() throws Exception{
-        var bug = Optional.of(new BugDTO(1L,"test","desc", "date", Priority.LOW, Development.BACKEND));
-        Mockito.when(bugFormService.getReport(1)).thenReturn(bug);
+        var bug = new BugDTO(1L, "test", "desc", "date", Priority.LOW, Development.BACKEND);
+        Mockito.when(bugFormService.getReport(1L)).thenReturn(bug);
         mockMvc.perform(get("/bugdetails")
                         .param("id", "1"))
                 .andExpect(status().isOk())

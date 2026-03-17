@@ -14,13 +14,15 @@
     <nav class="bug-nav">
         <span th:text="|Priority: ${bugdetail.priority()}|"></span>
         <div class="bug-nav-button">
-        <button disabled th:onclick="">Edit knapp</button>
-        <button th:onclick="location.href='/reports/add'">New Bug</button>
+            <button th:onclick="|location.href='/bugdetails/edit?id=' + ${bugdetail.id()}|">Edit report</button>
+            <button th:onclick="location.href='/reports/add'">Report new Bug</button>
         </div>
     </nav>
     <div class="bug-box">
         <h3>Description</h3>
         <p th:text="${bugdetail.description()}"></p>
+        <h5>Reported at</h5>
+        <p th:text="${bugdetail.bugDate()}"></p>
     </div>
     <footer class="bug-footer">
         <div class="dev-area">
@@ -28,8 +30,10 @@
             <span th:text="${bugdetail.development()}"></span>
         </div>
         <div class="bug-footer-button">
-        <button th:onclick="location.href='/'">Homescreen</button>
-        <button type="button">Close bug / report as fixed</button>
+            <button th:onclick="location.href='/'">Homescreen</button>
+            <button th:onclick="|location.href='/bugdetails/delete/confirm?id=' + ${bugdetail.id()}|">Close bug / report
+                as fixed
+            </button>
         </div>
     </footer>
 </div>
