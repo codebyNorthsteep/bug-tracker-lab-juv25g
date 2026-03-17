@@ -21,7 +21,7 @@
                 <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
         </form>
         </div>
-        <div class="card-buttons">
+        <div class="buttons-space-between">
             <button th:onclick="location.href='/'">Home</button>
             <button th:onclick="location.href='/reports/add'">Report bug</button>
         </div>
@@ -70,11 +70,11 @@
 
     <a th:if="${currentPage > 0}"
        th:href="@{/(page=${currentPage - 1}, size=${pageSize})}"
-       class="page-buttons">Previous</a>
+       class="buttons">Previous</a>
     <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
     <a th:if="${currentPage < (totalPages - 1)}"
        th:href="@{/(page=${currentPage + 1}, size=${pageSize})}"
-       class="page-buttons">Next</a>
+       class="buttons">Next</a>
 </div>
 
 </body>

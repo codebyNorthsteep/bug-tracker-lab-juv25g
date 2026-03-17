@@ -61,7 +61,7 @@ body {
     filter: brightness(1.1);
 }
 
-.card-buttons {
+.buttons-space-between {
     display: flex;
     justify-content: space-between;
 }
@@ -76,7 +76,8 @@ body {
 }
 
 /* Fina knappar */
-button {
+button, .buttons {
+    all: unset;
     background-color: #1e1e1e;
     color: white;
     border: none;
@@ -87,9 +88,11 @@ button {
     text-decoration: none;
     display: inline-block;
     transition: background-color 0.2s, filter 0.2s;
+    font-size: 1rem;
+    line-height: normal;
 }
 
-button:hover {
+button:hover, .buttons:hover {
     background-color: #535353;
     filter: brightness(1.1);
 }
@@ -158,14 +161,6 @@ th, td {
     gap: 15px;
 }
 
-.page-buttons {
-    background-color: #1e1e1e;
-    color: white;
-    padding: 8px;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
 .page-size select {
     cursor: pointer;
     border-radius: 5px;
@@ -180,10 +175,6 @@ th, td {
     background-color: #535353;
     border: solid #535353;
 
-}
-
-.page-buttons:hover {
-    background-color: #535353;
 }
 
 .col-id {
