@@ -208,11 +208,34 @@ th, td {
 }
 .bug-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
+    gap: 1vw;
+    flex-direction: column;
+}
+
+.bug-titlerow {
+    display: grid;
+    grid-template-columns: auto auto;
+
 }
 .bug-header h2 {
     font-size: 30px;
+}
+
+.header-data-boxes {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.big-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.title-input {
+
 }
 
 .bug-nav {
