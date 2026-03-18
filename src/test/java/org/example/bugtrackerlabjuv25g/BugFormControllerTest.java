@@ -23,6 +23,7 @@ class BugFormControllerTest {
     @Mock
     BugFormService bugFormService;
 
+
     @BeforeEach
     void setup(){
         this.mockMvc = MockMvcBuilders.standaloneSetup(new BugFormController(bugFormService))

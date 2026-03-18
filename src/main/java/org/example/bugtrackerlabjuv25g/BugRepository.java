@@ -1,5 +1,7 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
@@ -27,4 +29,10 @@ public interface BugRepository extends ListCrudRepository<Bug, Long> {
             END
             """)
     List<Bug> findAllByOrderByPriorityDesc();
+
+    List<Bug> findBugsByTitleContainingIgnoreCase(String title);
+
+    List<Bug> findBugsByDescriptionContainingIgnoreCase(String description);
+
+    Page<Bug> findAll(Pageable pageable);
 }

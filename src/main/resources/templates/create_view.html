@@ -6,28 +6,57 @@
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<nav><a th:href="@{/}">Go to List</a></nav>
-<h1>Create a bug report</h1>
-<form th:action="@{/reports/add}" th:object="${bugForm}" method="post">
-    <label for="title">Title</label>
-    <input type="text" th:field="*{title}" id="title"><br/>
-    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></span>
-    <label for="descr">Description</label>
-    <input type="text" th:field="*{description}" id="descr"><br/>
-    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>
-    <label for="prioselect">Priority</label>
-    <select th:field="*{priority}" id="prioselect">
-        <option th:each="prio : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
-                th:value="${prio}" th:text="${prio}"></option>
-    </select>
-    <span th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}" class="error"></span>
-    <label for="dev_area">Development area</label>
-    <select th:field="*{development}" id="dev_area">
-        <option th:each="dev : ${T(org.example.bugtrackerlabjuv25g.Development).values()}"
-                th:value="${dev}" th:text="${dev}"></option>
-    </select>
-    <span th:if="${#fields.hasErrors('development')}" th:errors="*{development}" class="error"></span>
-    <button type="submit">Save</button>
-</form>
+<div class="bug-container">
+    <form th:action="@{/reports/add}" th:object="${bugForm}" method="post">
+        <header class="bug-header">
+            <div class="bug-titlerow">
+                    <p class="big-title">Title</p>
+                    <input th:field="*{title}" id="title">
+            </div>
+            <div class="header-data-boxes">
+                <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></span>
+            </div>
+        </header>
+        <nav class="bug-nav">
+
+            <div class="bug-nav-button">
+                <button th:onclick="location.href='/'" type="reset">Homescreen</button>
+                <button th:onclick="location.href='/reports/add'" type="reset">Report new Bug</button>
+            </div>
+        </nav>
+        <div class="bug-box">
+            <h3>Description</h3>
+            <div class="description-input">
+                <textarea th:field="*{description}" id="description"></textarea>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>
+            </div>
+            <div class="description-box-footer">
+                <div class="description-data-boxes">
+                    <span class="tiny-title">Reported at</span>
+                </div>
+                <div class="description-data-boxes">
+                    <span class="tiny-title">Bug origin</span>
+                    <select class="drop-down" th:field="*{development}">
+                        <option th:each="area : ${T(org.example.bugtrackerlabjuv25g.Development).values()}"
+                                th:value="${area}" th:text="${area}"></option>
+                    </select>
+                </div>
+                <div class="description-data-boxes">
+                    <span class="tiny-title">Priority</span>
+                    <select class="drop-down" th:field="*{priority}">
+                        <option th:each="priority : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
+                                th:value="${priority}" th:text="${priority}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <footer class="bug-footer">
+            <div class="bug-footer-button">
+                <button type="submit">Save</button>
+            </div>
+        </footer>
+    </form>
+</div>
 </body>
+
 </html>

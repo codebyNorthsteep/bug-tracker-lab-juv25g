@@ -7,29 +7,30 @@
 </head>
 <body>
 <div class="bug-container">
-    <header class="bug-header">
-        <h2 th:text="|Confirm Closure: ${bugdetail.title()}|"></h2>
-        <h2 th:text="|#${bugdetail.id()}|"></h2>
-    </header>
+    <form th:action="@{/bugdetails/delete}" method="post">
+        <input type="hidden" name="id" th:value="${bugdetail.id()}"/>
+        <header class="bug-header">
+            <div class="bug-titlerow-withspace">
+                <p class="big-title" th:text="|Confirm Closure: ${bugdetail.title()}|"></p>
+                <p class="big-title" th:text="|#${bugdetail.id()}|"></p>
+            </div>
+        </header>
 
-    <div class="bug-box">
-        <h3>Are you sure?</h3>
-        <p>Do you really want to mark this bug as fixed and remove it from the tracker?</p>
-        <p>This action cannot be undone.</p>
-    </div>
+        <div class="bug-box-delete">
+            <h3>Are you sure?</h3>
+            <p>Do you really want to mark this bug as fixed and remove it from the tracker?</p>
+            <p>This action cannot be undone.</p>
+        </div>
 
-    <footer class="bug-footer">
-        <div class="bug-footer-button">
-            <button type="button" th:onclick="location.href='/'">Cancel</button>
-
-            <form th:action="@{/bugdetails/delete}" method="post" style="display: inline;">
-                <input type="hidden" name="id" th:value="${bugdetail.id()}"/>
+        <footer class="bug-footer">
+            <div class="bug-footer-button">
+                <button type="reset" th:onclick="location.href='/'">Cancel</button>
                 <button type="submit" class="btn-danger">
                     Yes, mark as fixed and delete
                 </button>
-            </form>
-        </div>
-    </footer>
+            </div>
+        </footer>
+    </form>
 </div>
 </body>
 </html>
