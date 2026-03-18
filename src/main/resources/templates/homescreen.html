@@ -3,79 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Bug Tracker</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<div class="toplayer">
-    <div class="card">
-        <label for="totalbugs">Total amount of bugs</label>
-        <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p><br/>
-    </div>
-    <div class="card">
-        <label for="highpriobugs">High priority bugs</label>
-        <p id="highpriobugs" th:text="${highPriorityBugs}"></p></br>
-    </div>
-    <div class="card">
-        <div class="search-container">
-            <form th:action="@{/search}" method="get" class="search-form">
-                <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
-        </form>
+<div class="bug-container">
+    <div class="card-container">
+        <div class="card">
+            <label for="totalbugs">Total amount of bugs</label>
+            <p id="totalbugs" th:text="${bugsReported}">Fallback text amount of bugs</p>
         </div>
-        <div class="buttons-space-between">
-            <button th:onclick="location.href='/'">Home</button>
-            <button th:onclick="location.href='/reports/add'">Report bug</button>
+        <div class="card">
+            <label for="highPriority">High priority bugs</label>
+            <p id="highPriority" th:text="${highPriorityBugs}"></p>
+        </div>
+        <div class="card">
+            <div class="search-container">
+                <form th:action="@{/search}" method="get" class="search-form">
+                    <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
+                </form>
+            </div>
+            <div class="buttons-space-between">
+                <button th:onclick="location.href='/'">Home</button>
+                <button th:onclick="location.href='/reports/add'">Report bug</button>
+            </div>
         </div>
     </div>
-</div>
-<div class="content">
-    <div class="table-content">
-        <table>
-            <thead>
-            <tr>
-                <th class="col-id">Id</th>
-                <th class="col-title">Title</th>
-                <th class="col-description">Description</th>
-                <th class="col-priority">Priority</th>
-                <th class="col-area">Area</th>
-                <th class="col-date">Created</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${bugs.isEmpty()}">
-                <td colspan="6">No bugs found</td>
-            </tr>
-            <tr th:each="bug : ${bugs}"
-            th:onclick="|window.location.href='/bugdetails?id=' + ${bug.id()}|"
-            style="cursor: pointer;">
-                <td><span th:text="${bug.id()}">Id</span></td>
-                <td><span th:text="${bug.title()}">Title</span></td>
-                <td><span th:text="${bug.description()}">Description</span></td>
-                <td><span th:text="${bug.priority()}">Description</span></td>
-                <td><span th:text="${bug.development()}">Description</span></td>
-                <td><span th:text="${bug.bugDate()}">Description</span></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="content">
+        <div class="table-content">
+            <table>
+                <thead>
+                <tr>
+                    <th class="col-id">Id</th>
+                    <th class="col-title">Title</th>
+                    <th class="col-description">Description</th>
+                    <th class="col-priority">Priority</th>
+                    <th class="col-area">Area</th>
+                    <th class="col-date">Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${bugs.isEmpty()}">
+                    <td colspan="6">No bugs found</td>
+                </tr>
+                <tr th:each="bug : ${bugs}"
+                    th:onclick="|window.location.href='/bugdetails?id=' + ${bug.id()}|"
+                    style="cursor: pointer;">
+                    <td><span th:text="${bug.id()}">Id</span></td>
+                    <td><span th:text="${bug.title()}">Title</span></td>
+                    <td><span th:text="${bug.description()}">Description</span></td>
+                    <td><span th:text="${bug.priority()}">Description</span></td>
+                    <td><span th:text="${bug.development()}">Description</span></td>
+                    <td><span th:text="${bug.bugDate()}">Description</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="page-container" th:if="${totalPages > 0}">
+        <div class="page-size">
+            <label for="sizeselection">Items per page: </label>
+            <select id="sizeselection" onchange="location = this.value;">
+                <option th:value="@{/(page=0, size=10)}" th:selected="${pageSize == 10}">10</option>
+                <option th:value="@{/(page=0, size=20)}" th:selected="${pageSize == 20}">20</option>
+                <option th:value="@{/(page=0, size=50)}" th:selected="${pageSize == 50}">50</option>
+            </select>
+        </div>
+
+        <a th:if="${currentPage > 0}"
+           th:href="@{/(page=${currentPage - 1}, size=${pageSize})}"
+           class="buttons">Previous</a>
+        <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
+        <a th:if="${currentPage < (totalPages - 1)}"
+           th:href="@{/(page=${currentPage + 1}, size=${pageSize})}"
+           class="buttons">Next</a>
     </div>
 </div>
-<div class="page-container" th:if="${totalPages > 0}">
-    <div class="page-size">
-        <label for="sizeselection">Items per page: </label>
-        <select id="sizeselection" onchange="location = this.value;">
-            <option th:value="@{/(page=0, size=10)}" th:selected="${pageSize == 10}">10</option>
-            <option th:value="@{/(page=0, size=20)}" th:selected="${pageSize == 20}">20</option>
-            <option th:value="@{/(page=0, size=50)}" th:selected="${pageSize == 50}">50</option>
-        </select>
-    </div>
-
-    <a th:if="${currentPage > 0}"
-       th:href="@{/(page=${currentPage - 1}, size=${pageSize})}"
-       class="buttons">Previous</a>
-    <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
-    <a th:if="${currentPage < (totalPages - 1)}"
-       th:href="@{/(page=${currentPage + 1}, size=${pageSize})}"
-       class="buttons">Next</a>
-</div>
-
 </body>
 </html>

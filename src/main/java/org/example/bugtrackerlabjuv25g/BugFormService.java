@@ -15,13 +15,11 @@ public class BugFormService {
 
     private final BugRepository bugRepository;
     private final BugMapper mapper;
-    private final PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer;
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
     public BugFormService(BugRepository bugRepository, BugMapper mapper, PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
-        this.pageableCustomizer = pageableCustomizer;
     }
 
     private List<BugDTO> mapList(List<Bug> bugs) {

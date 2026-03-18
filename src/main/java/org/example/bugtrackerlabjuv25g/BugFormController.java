@@ -1,11 +1,11 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -115,28 +115,22 @@ public class BugFormController {
     }
 
     @GetMapping("/search")
-    public String getSearchResult(@RequestParam(required = false) String input, Model model) {
-        if (input == null || input.isEmpty()) {
+    public String getSearchResult(@RequestParam(required = false) String input,
+                                  @RequestParam(value = "page", defaultValue = "0") int page,
+                                  @RequestParam(value = "size", defaultValue = "20") int size,
+                                  Model model) {
+        if (input == null || input.isBlank()) {
             return "redirect:/";
         } else {
             model.addAttribute("bugs", bugformService.findBugsByTitleOrDescription(input));
+            model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
+            model.addAttribute("bugsReported", bugformService.getCount());
+            model.addAttribute("totalPages", page);
+            model.addAttribute("pageSize", size);
+
         }
-        model.addAttribute("bugsReported", bugformService.getCount());
-        model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
         return "homescreen";
     }
 
-//    @GetMapping
-//    public String getAllBugsByPage(
-//            Model model,
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "size", defaultValue = "20") int size
-//    ) {
-//        Pageable pageable = Pageable.ofSize(size);
-//        model.addAttribute("bugsReported", bugformService.getCount());
-//        model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
-//        model.addAttribute("bugs", bugformService.getPagedBugs(Pageable.ofSize(size)));
-//        return "homescreen";
-//    }
 
 }
