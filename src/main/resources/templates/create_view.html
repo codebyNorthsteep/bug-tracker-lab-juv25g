@@ -10,12 +10,8 @@
     <form th:action="@{/reports/add}" th:object="${bugForm}" method="post">
         <header class="bug-header">
             <div class="bug-titlerow">
-                <div class="header-data-boxes">
                     <p class="big-title">Title</p>
-                </div>
-                <div class="header-data-boxes">
                     <input th:field="*{title}" id="title">
-                </div>
             </div>
             <div class="header-data-boxes">
                 <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></span>
@@ -30,22 +26,24 @@
         </nav>
         <div class="bug-box">
             <h3>Description</h3>
-            <input type="text" th:field="*{description}">
+            <div class="description-input">
+                <textarea th:field="*{description}" id="description"></textarea>
             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>
+            </div>
             <div class="description-box-footer">
                 <div class="description-data-boxes">
                     <span class="tiny-title">Reported at</span>
                 </div>
                 <div class="description-data-boxes">
                     <span class="tiny-title">Bug origin</span>
-                    <select th:field="*{development}">
+                    <select class="drop-down" th:field="*{development}">
                         <option th:each="area : ${T(org.example.bugtrackerlabjuv25g.Development).values()}"
                                 th:value="${area}" th:text="${area}"></option>
                     </select>
                 </div>
                 <div class="description-data-boxes">
                     <span class="tiny-title">Priority</span>
-                    <select th:field="*{priority}">
+                    <select class="drop-down" th:field="*{priority}">
                         <option th:each="priority : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
                                 th:value="${priority}" th:text="${priority}"></option>
                     </select>

@@ -207,26 +207,68 @@ th, td {
     margin: 0 auto;
 }
 .bug-header {
+    background-color: #1e1e1e;
+    border-radius: 10px;
     display: flex;
     justify-content: left;
-    align-items: center;
-    gap: 1vw;
     flex-direction: column;
+    width: 100%;
+    padding: 10px;
+
 }
 
 .bug-titlerow {
-    display: grid;
-    grid-template-columns: auto auto;
-
-}
-.bug-header h2 {
-    font-size: 30px;
-}
-
-.header-data-boxes {
     display: flex;
-    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+    gap: 1vh;
+}
 
+#title {
+    background-color: #535353;
+    border: 1px solid #1e1e1e;
+    border-radius: 5px;
+    color: white;
+    padding: 2px 5px;
+    font-size: 2rem;
+    width: inherit;
+}
+
+#title:focus {
+    border-color: #535353;
+}
+
+.description-input {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    min-height: inherit;
+}
+
+#description {
+    background-color: #535353;
+    border: 2px solid #535353;
+    color: white;
+    border-radius: 5px;
+    min-height: inherit;
+
+}
+
+.drop-down {
+    cursor: pointer;
+    color: white;
+    background-color: #1e1e1e;
+    border: solid #1e1e1e;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 0.9rem;
+
+}
+
+.drop-down:hover {
+    background-color: #535353;
+    border: solid #535353;
 }
 
 .big-title {
@@ -234,14 +276,11 @@ th, td {
     font-weight: bold;
 }
 
-.title-input {
-
-}
-
 .bug-nav {
     display: flex;
     justify-content: right;
     align-items: center;
+    margin-top: 2vh;
     margin-bottom: 2vh;
 }
 
@@ -258,6 +297,7 @@ th, td {
     border-radius: 10px;
     margin-top: 0;
     font-size: 16px;
+    min-height: 40vw;
 }
 
 .description-box-footer {
@@ -284,6 +324,10 @@ th, td {
     justify-content: right;
     align-items: center;
     margin-top: 2vh;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .error {
