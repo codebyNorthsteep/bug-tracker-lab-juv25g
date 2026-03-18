@@ -107,5 +107,17 @@ class BugFormControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error"));
     }
+
+    @Test
+    @DisplayName("GET Edit form returns with correct view with data to edit, attribute and status")
+    void showEditForm() throws Exception {
+        var bug = new BugDTO(1L, "test", "desc", "date", Priority.LOW, Development.BACKEND);
+        Mockito.when(bugFormService.getReport(1L)).thenReturn(bug);
+        mockMvc.perform(get("/bugdetails/edit")
+                        .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("bugForm"))
+                .andExpect(view().name("edit_view"));
+    }
 }
 
