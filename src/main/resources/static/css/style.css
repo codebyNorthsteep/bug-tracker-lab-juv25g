@@ -225,6 +225,13 @@ th, td {
     gap: 1vh;
 }
 
+.bug-titlerow-withspace {
+    display: flex;
+    justify-content: space-between;
+    gap: 5vh;
+
+}
+
 #title {
     background-color: #535353;
     border: 1px solid #1e1e1e;

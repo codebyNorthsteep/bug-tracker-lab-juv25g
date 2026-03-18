@@ -8,8 +8,10 @@
 <body>
 <div class="bug-container">
     <header class="bug-header">
-        <h2 th:text="${bugdetail.title()}"></h2>
-        <h2 th:text="|#${bugdetail.id()}|"></h2>
+        <div class="bug-titlerow-withspace">
+            <p class="big-title" th:text="${bugdetail.title()}"></p>
+            <p class="big-title" th:text="|#${bugdetail.id()}|"></p>
+        </div>
     </header>
     <nav class="bug-nav">
 
@@ -20,7 +22,7 @@
     </nav>
     <div class="bug-box">
         <h3>Description</h3>
-        <p th:text="${bugdetail.description()}"></p>
+        <p class="description-input" th:text="${bugdetail.description()}"></p>
         <div class="description-box-footer">
             <div class="description-data-boxes">
                 <span class="tiny-title">Reported at</span>
