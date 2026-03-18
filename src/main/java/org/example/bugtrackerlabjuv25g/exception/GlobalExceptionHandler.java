@@ -27,12 +27,4 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    // "Catch-all" for any other exceptions that are not specifically handled, to prevent application crashes and provide a user-friendly error message
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public String handleGeneralException(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "An unexpected error occurred. Please try again later.");
-        model.addAttribute("errorTitle", "Server Error");
-        return "error";
-    }
 }
