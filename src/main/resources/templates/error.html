@@ -12,7 +12,11 @@
     </header>
     <div class="bug-box">
         <h3>Oops!</h3>
-        <p th:text="${errorMessage}"></p>
+        <p th:text="${errorMessage != null ? errorMessage : message}"></p>
+
+        <p th:if="${status != null}">
+            Status code: <span th:text="${status}"></span>
+        </p>
     </div>
     <footer class="bug-footer">
         <div class="bug-footer-button">
