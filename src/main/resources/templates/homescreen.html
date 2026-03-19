@@ -20,6 +20,8 @@
             <div class="search-container">
                 <form th:action="@{/search}" method="get" class="search-form">
                     <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
+                    <input type="hidden" th:name="size" th:value="${pageSize}">
+                    <input type="hidden" th:name="page" th:value="0">
                 </form>
             </div>
             <div class="buttons-space-between">
@@ -59,22 +61,28 @@
             </table>
         </div>
     </div>
-    <div class="page-container" th:if="${totalPages > 0}">
+    <div class="page-container" th:if="${totalPages > 0}"
+         th:with="baseUrl=${search != null ? '/search' : '/'}">
         <div class="page-size">
             <label for="sizeselection">Items per page: </label>
             <select id="sizeselection" onchange="location = this.value;">
-                <option th:value="@{/(page=0, size=10)}" th:selected="${pageSize == 10}">10</option>
-                <option th:value="@{/(page=0, size=20)}" th:selected="${pageSize == 20}">20</option>
-                <option th:value="@{/(page=0, size=50)}" th:selected="${pageSize == 50}">50</option>
+                <option th:value="@{{path}(input=${search}, page=0, size=10, path=${baseUrl})}"
+                        th:selected="${pageSize == 10}">10
+                </option>
+                <option th:value="@{{path}(input=${search}, page=0, size=20, path=${baseUrl})}"
+                        th:selected="${pageSize == 20}">20
+                </option>
+                <option th:value="@{{path}(input=${search}, page=0, size=50, path=${baseUrl})}"
+                        th:selected="${pageSize == 50}">50
+                </option>
             </select>
         </div>
-
         <a th:if="${currentPage > 0}"
-           th:href="@{/(page=${currentPage - 1}, size=${pageSize})}"
+           th:href="@{{path}(input=${search}, page=${currentPage - 1}, size=${pageSize}, path=${baseUrl})}"
            class="buttons">Previous</a>
         <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
         <a th:if="${currentPage < (totalPages - 1)}"
-           th:href="@{/(page=${currentPage + 1}, size=${pageSize})}"
+           th:href="@{{path}(input=${search}, page=${currentPage + 1}, size=${pageSize}, path=${baseUrl})}"
            class="buttons">Next</a>
     </div>
 </div>

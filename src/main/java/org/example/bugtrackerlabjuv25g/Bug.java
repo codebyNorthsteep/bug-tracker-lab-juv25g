@@ -1,7 +1,11 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +35,10 @@ public class Bug {
     @NotNull(message = "Priority must be chosen")
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    //Make PageRequest sort by priority 0 -> 2 instead of alphabetical high,medium, low
+    @Formula("CASE priority WHEN 'HIGH' THEN 0 WHEN 'MEDIUM' THEN 1 ELSE 2 END")
+    private int priorityOrder;
 
     @NotNull(message = "Development area must be chosen")
     @Enumerated(EnumType.STRING)
@@ -86,4 +94,5 @@ public class Bug {
     public void setBugDate(LocalDateTime bugDate) {
         this.bugDate = bugDate;
     }
+
 }
