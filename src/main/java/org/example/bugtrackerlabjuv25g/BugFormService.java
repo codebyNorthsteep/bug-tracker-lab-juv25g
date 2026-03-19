@@ -2,8 +2,12 @@ package org.example.bugtrackerlabjuv25g;
 
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,13 +17,17 @@ public class BugFormService {
     private final BugMapper mapper;
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
-    public BugFormService(BugRepository bugRepository, BugMapper mapper) {
+    public BugFormService(BugRepository bugRepository, BugMapper mapper, PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
     }
 
     private List<BugDTO> mapList(List<Bug> bugs) {
         return bugs.stream().map(mapper::toDTO).toList();
+    }
+
+    private Page<BugDTO> mapPage(Page<Bug> bugs) {
+        return bugs.map(mapper::toDTO);
     }
 
     public void saveReport(CreateBugDTO bugForm) {
@@ -90,8 +98,20 @@ public class BugFormService {
                 .orElseThrow(() -> new ResourceNotFound("Bug with id " + id + " not found"));
     }
 
+    public List<BugDTO> findBugsByTitleOrDescription(String input) {
+        List<BugDTO> searchList = new ArrayList<>(mapList(bugRepository.findBugsByTitleContainingIgnoreCase(input)));
+        if (searchList.isEmpty()) {
+            searchList.addAll(mapList(bugRepository.findBugsByDescriptionContainingIgnoreCase(input)));
+        }
+        return searchList;
+    }
+
     public List<BugDTO> getAllBugs() {
         return mapList(bugRepository.findAll());
+    }
+
+    public Page<BugDTO> getPagedBugs(Pageable pageable) {
+        return mapPage(bugRepository.findAll(pageable));
     }
 
     public long getCount() {

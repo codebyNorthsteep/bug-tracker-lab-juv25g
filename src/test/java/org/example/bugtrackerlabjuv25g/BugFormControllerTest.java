@@ -174,7 +174,7 @@ class BugFormControllerTest {
         mockMvc.perform(post("/bugdetails/delete").param("id", "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
-        
+
         Mockito.verify(bugFormService).deleteReport(1L);
     }
 }
