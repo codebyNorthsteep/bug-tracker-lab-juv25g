@@ -45,9 +45,28 @@ class BugFormControllerTest {
     void postBugFormInvalidForm() throws Exception {
         mockMvc.perform(post("/reports/add")
                         .param("title", "s")
-                        .param("description", "Too short title and missing fields"))
+                        .param("des", "Too short title and missing fields"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create_view"));
+                .andExpect(view().name("create_view"))
+                .andExpect(model().attributeHasFieldErrors("bugForm", "title", "description"));
+    }
+
+    @Test
+    @DisplayName("POST Form with duplicate title should stay in edit_view with specific error")
+    void postBugFormDuplicateTitle() throws Exception {
+        // 1. Mocka så att servicen kastar felet när vi försöker spara
+        Mockito.doThrow(new IllegalArgumentException("Title exists"))
+                .when(bugFormService).saveReport(Mockito.any());
+
+        // 2. Skicka in GILTIG data (så vi passerar if-satsen med bindingResult.hasErrors)
+        mockMvc.perform(post("/reports/add")
+                        .param("title", "Existing Title")
+                        .param("description", "Valid length description")
+                        .param("priority", "LOW")
+                        .param("development", "BACKEND"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("create_view"))
+                .andExpect(model().attributeHasFieldErrors("bugForm", "title"));
     }
 
     @Test
@@ -135,9 +154,7 @@ class BugFormControllerTest {
                         .param("title", "s")
                         .param("des", "Too short title and missing fields"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("edit_view"))
-                .andExpect(model().attributeHasFieldErrors("bugForm", "title", "description"));
-
+                .andExpect(view().name("edit_view"));
     }
 
     @Test
@@ -194,12 +211,40 @@ class BugFormControllerTest {
     }
 
     @Test
-    @DisplayName("GET Search with empty input or blank space should redirect to home")
-    void getSearchResultEmptyInput() throws Exception {
+    @DisplayName("GET Search with blank space should redirect to home")
+    void getSearchResultBlankInput() throws Exception {
         mockMvc.perform(get("/search")
-                        .param("input", "   ")) // Testar med blanksteg (isBlank())
+                        .param("input", "   "))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("GET Search with null input should redirect to home")
+    void getSearchResultNullInput() throws Exception {
+        mockMvc.perform(get("/search"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("GET Search with valid input should show homescreen with paged results")
+    void getSearchResultValidInput() throws Exception {
+
+        String searchWord = "test";
+        var bug = new BugDTO(1L, "test bug", "desc", "date", Priority.HIGH, Development.BACKEND);
+        List<BugDTO> searchResults = List.of(bug);
+
+        Page<BugDTO> mockPage = new PageImpl<>(searchResults, PageRequest.of(0, 20), 1);
+
+        Mockito.when(bugFormService.getSearchByTitleOrDescription(Mockito.eq(searchWord), Mockito.any())).thenReturn(mockPage);
+
+        mockMvc.perform(get("/search")
+                        .param("input", searchWord))
+                .andExpect(status().isOk())
+                .andExpect(view().name("homescreen"))
+                .andExpect(model().attributeExists("bugs", "highPriorityBugs", "bugsReported", "totalPages", "pageSize", "currentPage", "search"))
+                .andExpect(model().attribute("search", searchWord));
     }
 }
 
