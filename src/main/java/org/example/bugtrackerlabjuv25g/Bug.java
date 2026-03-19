@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 // Database-level constraint to prevent duplicate bug-title in the same development area.
@@ -35,6 +35,10 @@ public class Bug {
     @NotNull(message = "Priority must be chosen")
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    //Make PageRequest sort by priority 0 -> 2 instead of alphabetical high,medium, low
+    @Formula("CASE priority WHEN 'HIGH' THEN 0 WHEN 'MEDIUM' THEN 1 ELSE 2 END")
+    private int priorityOrder;
 
     @NotNull(message = "Development area must be chosen")
     @Enumerated(EnumType.STRING)
@@ -91,15 +95,4 @@ public class Bug {
         this.bugDate = bugDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Bug bug = (Bug) o;
-        return Objects.equals(id, bug.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

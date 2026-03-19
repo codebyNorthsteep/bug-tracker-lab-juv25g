@@ -3,12 +3,11 @@ package org.example.bugtrackerlabjuv25g;
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class BugFormService {
@@ -100,36 +99,7 @@ public class BugFormService {
 
 
     public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
-        List<Bug> titleList = bugRepository.findBugsByTitleContainingIgnoreCase(input);
-        List<Bug> descriptionList = bugRepository.findBugsByDescriptionContainingIgnoreCase(input);
-
-        List<Bug> mergedList = mergeBugList(titleList, descriptionList);
-        List<BugDTO> mergedDTOList = mapList(mergedList);
-
-        return createPageFromList(mergedDTOList, pageable);
-    }
-
-    private Page<BugDTO> createPageFromList(List<BugDTO> list, Pageable pageable) {
-        int totalElements = list.size();
-        int pageNumber = pageable.getPageNumber();
-        int pageSize = pageable.getPageSize();
-
-        int startIndex = Math.min(pageNumber * pageSize, totalElements);
-        int endIndex = Math.min(startIndex + pageSize, totalElements);
-
-        if (startIndex >= endIndex) {
-            return new PageImpl<>(Collections.emptyList(), pageable, totalElements);
-        }
-        List<BugDTO> pageContent = list.subList(startIndex, endIndex);
-
-        return new PageImpl<>(pageContent, pageable, totalElements);
-
-    }
-
-    private List<Bug> mergeBugList(List<Bug> titleList, List<Bug> descriptionList) {
-        Set<Bug> bugSet = new LinkedHashSet<>(titleList);
-        bugSet.addAll(descriptionList);
-        return new ArrayList<>(bugSet.stream().sorted(Comparator.comparing(Bug::getPriority)).toList());
+        return mapPage(bugRepository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(input, input, pageable));
     }
 
     public List<BugDTO> getAllBugs() {

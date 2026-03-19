@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -122,7 +123,7 @@ public class BugFormController {
         if (input == null || input.isBlank()) {
             return "redirect:/";
         } else {
-            Pageable pageable = PageRequest.of(page, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.by("priorityOrder"));
             Page<BugDTO> paged = bugformService.getSearchByTitleOrDescription(input, pageable);
             model.addAttribute("bugs", paged);
             model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
