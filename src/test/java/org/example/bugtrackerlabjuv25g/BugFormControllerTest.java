@@ -73,6 +73,7 @@ class BugFormControllerTest {
         Page<BugDTO> mockPage = new PageImpl<>(bugList, PageRequest.of(0, 20), 1);
 
         Mockito.when(bugFormService.getPagedBugs(Mockito.any())).thenReturn(mockPage);
+        //Others are used in the view to show total bugs and high priority bugs count
         Mockito.when(bugFormService.getCount()).thenReturn(1L);
         Mockito.when(bugFormService.getBugsByPriority(Priority.HIGH)).thenReturn(List.of());
 
@@ -190,6 +191,15 @@ class BugFormControllerTest {
                 .andExpect(view().name("redirect:/"));
 
         Mockito.verify(bugFormService).deleteReport(1L);
+    }
+
+    @Test
+    @DisplayName("GET Search with empty input or blank space should redirect to home")
+    void getSearchResultEmptyInput() throws Exception {
+        mockMvc.perform(get("/search")
+                        .param("input", "   ")) // Testar med blanksteg (isBlank())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
     }
 }
 
