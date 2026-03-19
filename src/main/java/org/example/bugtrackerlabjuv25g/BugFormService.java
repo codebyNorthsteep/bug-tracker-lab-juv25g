@@ -98,25 +98,14 @@ public class BugFormService {
                 .orElseThrow(() -> new ResourceNotFound("Bug with id " + id + " not found"));
     }
 
-    public List<BugDTO> findBugsByTitleOrDescription(String input) {
-        List<BugDTO> searchList = new ArrayList<>(mapList(bugRepository.findBugsByTitleContainingIgnoreCase(input)));
-        if (searchList.isEmpty()) {
-            searchList.addAll(mapList(bugRepository.findBugsByDescriptionContainingIgnoreCase(input)));
-        }
-        return searchList;
-    }
 
     public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
         List<Bug> titleList = bugRepository.findBugsByTitleContainingIgnoreCase(input);
         List<Bug> descriptionList = bugRepository.findBugsByDescriptionContainingIgnoreCase(input);
-        System.out.println("Title size: " + titleList.size() + "\n Description size: " + descriptionList.size());
 
-        //merge
         List<Bug> mergedList = mergeBugList(titleList, descriptionList);
-        //comvert to DTO
         List<BugDTO> mergedDTOList = mapList(mergedList);
 
-        //createPageFromList
         return createPageFromList(mergedDTOList, pageable);
     }
 
@@ -127,7 +116,6 @@ public class BugFormService {
 
         int startIndex = Math.min(pageNumber * pageSize, totalElements);
         int endIndex = Math.min(startIndex + pageSize, totalElements);
-
 
         if (startIndex >= endIndex) {
             return new PageImpl<>(Collections.emptyList(), pageable, totalElements);

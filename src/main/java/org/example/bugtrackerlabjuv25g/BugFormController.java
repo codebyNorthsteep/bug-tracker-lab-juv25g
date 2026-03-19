@@ -56,7 +56,6 @@ public class BugFormController {
         model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
-
         return "homescreen";
     }
 
@@ -117,8 +116,8 @@ public class BugFormController {
 
     @GetMapping("/search")
     public String getSearchResult(@RequestParam(required = false) String input,
-                                  @RequestParam(value = "page") int page,
-                                  @RequestParam(value = "size") int size,
+                                  @RequestParam(value = "page", defaultValue = "0") int page,
+                                  @RequestParam(value = "size", defaultValue = "20") int size,
                                   Model model) {
         if (input == null || input.isBlank()) {
             return "redirect:/";
@@ -132,7 +131,6 @@ public class BugFormController {
             model.addAttribute("pageSize", size);
             model.addAttribute("currentPage", page);
             model.addAttribute("search", input);
-
         }
         return "homescreen";
     }
