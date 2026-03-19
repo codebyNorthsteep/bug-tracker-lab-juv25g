@@ -167,5 +167,15 @@ class BugFormControllerTest {
                 .andExpect(model().attributeExists("bugdetail"))
                 .andExpect(view().name("confirm_delete"));
     }
+
+    @Test
+    @DisplayName("POST Delete bug should redirect to home")
+    void deleteReport() throws Exception {
+        mockMvc.perform(post("/bugdetails/delete").param("id", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+        
+        Mockito.verify(bugFormService).deleteReport(1L);
+    }
 }
 
