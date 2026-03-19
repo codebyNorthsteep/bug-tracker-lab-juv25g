@@ -131,6 +131,7 @@ public class BugFormController {
             model.addAttribute("totalPages", paged.getTotalPages());
             model.addAttribute("pageSize", size);
             model.addAttribute("currentPage", page);
+            model.addAttribute("search", input);
 
         }
         return "homescreen";

@@ -61,7 +61,7 @@
             </table>
         </div>
     </div>
-    <div class="page-container" th:if="${totalPages > 0}">
+    <div class="page-container" th:if="${totalPages > 0 && search == null}">
         <div class="page-size">
             <label for="sizeselection">Items per page: </label>
             <select id="sizeselection" onchange="location = this.value;">
@@ -70,13 +70,29 @@
                 <option th:value="@{/(page=0, size=50)}" th:selected="${pageSize == 50}">50</option>
             </select>
         </div>
-
         <a th:if="${currentPage > 0}"
            th:href="@{/(page=${currentPage - 1}, size=${pageSize})}"
            class="buttons">Previous</a>
         <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
         <a th:if="${currentPage < (totalPages - 1)}"
            th:href="@{/(page=${currentPage + 1}, size=${pageSize})}"
+           class="buttons">Next</a>
+    </div>
+    <div class="page-container" th:if="${search != null}">
+        <div class="page-size">
+            <label for="sizeselectionsearch">Items per page: </label>
+            <select id="sizeselectionsearch" onchange="location = this.value;">
+                <option th:value="@{/(page=0, size=10)}" th:selected="${pageSize == 10}">10</option>
+                <option th:value="@{/(page=0, size=20)}" th:selected="${pageSize == 20}">20</option>
+                <option th:value="@{/(page=0, size=50)}" th:selected="${pageSize == 50}">50</option>
+            </select>
+        </div>
+        <a th:if="${currentPage > 0}"
+           th:href="@{/search(input=${search}, page=${currentPage - 1}, size=${pageSize})}"
+           class="buttons">Previous</a>
+        <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
+        <a th:if="${currentPage < (totalPages - 1)}"
+           th:href="@{/search(input=${search}, page=${currentPage + 1}, size=${pageSize})}"
            class="buttons">Next</a>
     </div>
 </div>
