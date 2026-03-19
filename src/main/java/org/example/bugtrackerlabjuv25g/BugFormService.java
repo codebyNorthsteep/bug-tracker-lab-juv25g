@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -98,12 +97,9 @@ public class BugFormService {
                 .orElseThrow(() -> new ResourceNotFound("Bug with id " + id + " not found"));
     }
 
-    public List<BugDTO> findBugsByTitleOrDescription(String input) {
-        List<BugDTO> searchList = new ArrayList<>(mapList(bugRepository.findBugsByTitleContainingIgnoreCase(input)));
-        if (searchList.isEmpty()) {
-            searchList.addAll(mapList(bugRepository.findBugsByDescriptionContainingIgnoreCase(input)));
-        }
-        return searchList;
+
+    public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
+        return mapPage(bugRepository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(input, input, pageable));
     }
 
     public List<BugDTO> getAllBugs() {
