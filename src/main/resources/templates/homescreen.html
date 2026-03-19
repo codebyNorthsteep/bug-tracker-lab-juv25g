@@ -20,6 +20,8 @@
             <div class="search-container">
                 <form th:action="@{/search}" method="get" class="search-form">
                     <input type="text" name="input" placeholder="Search by title or description" class="search-input"/>
+                    <input type="hidden" th:name="size" th:value="${pageSize}">
+                    <input type="hidden" th:name="page" th:value="${currentPage}">
                 </form>
             </div>
             <div class="buttons-space-between">

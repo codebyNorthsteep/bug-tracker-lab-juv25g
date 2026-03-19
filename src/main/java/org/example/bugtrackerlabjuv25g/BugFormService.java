@@ -3,12 +3,12 @@ package org.example.bugtrackerlabjuv25g;
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BugFormService {
@@ -104,6 +104,44 @@ public class BugFormService {
             searchList.addAll(mapList(bugRepository.findBugsByDescriptionContainingIgnoreCase(input)));
         }
         return searchList;
+    }
+
+    public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
+        List<Bug> titleList = bugRepository.findBugsByTitleContainingIgnoreCase(input);
+        List<Bug> descriptionList = bugRepository.findBugsByDescriptionContainingIgnoreCase(input);
+        System.out.println("Title size: " + titleList.size() + "\n Description size: " + descriptionList.size());
+
+        //merge
+        List<Bug> mergedList = mergeBugList(titleList, descriptionList);
+        //comvert to DTO
+        List<BugDTO> mergedDTOList = mapList(mergedList);
+
+        //createPageFromList
+        return createPageFromList(mergedDTOList, pageable);
+    }
+
+    private Page<BugDTO> createPageFromList(List<BugDTO> list, Pageable pageable) {
+        int totalElements = list.size();
+        int pageNumber = pageable.getPageNumber();
+        int pageSize = pageable.getPageSize();
+
+        int startIndex = Math.min(pageNumber * pageSize, totalElements);
+        int endIndex = Math.min(startIndex + pageSize, totalElements);
+
+
+        if (startIndex >= endIndex) {
+            return new PageImpl<>(Collections.emptyList(), pageable, totalElements);
+        }
+        List<BugDTO> pageContent = list.subList(startIndex, endIndex);
+
+        return new PageImpl<>(pageContent, pageable, totalElements);
+
+    }
+
+    private List<Bug> mergeBugList(List<Bug> titleList, List<Bug> descriptionList) {
+        Set<Bug> bugSet = new LinkedHashSet<>(titleList);
+        bugSet.addAll(descriptionList);
+        return new ArrayList<>(bugSet.stream().sorted(Comparator.comparing(Bug::getPriority)).toList());
     }
 
     public List<BugDTO> getAllBugs() {

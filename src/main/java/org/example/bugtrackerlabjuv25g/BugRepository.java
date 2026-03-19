@@ -35,4 +35,5 @@ public interface BugRepository extends ListCrudRepository<Bug, Long> {
     List<Bug> findBugsByDescriptionContainingIgnoreCase(String description);
 
     Page<Bug> findAll(Pageable pageable);
+
 }

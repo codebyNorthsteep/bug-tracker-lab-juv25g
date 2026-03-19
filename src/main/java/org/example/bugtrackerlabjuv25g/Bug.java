@@ -1,9 +1,13 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 // Database-level constraint to prevent duplicate bug-title in the same development area.
@@ -85,5 +89,17 @@ public class Bug {
 
     public void setBugDate(LocalDateTime bugDate) {
         this.bugDate = bugDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Bug bug = (Bug) o;
+        return Objects.equals(id, bug.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
