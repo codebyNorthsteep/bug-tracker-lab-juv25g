@@ -114,15 +114,46 @@ class BugFormControllerTest {
     }
 
     @Test
-    @DisplayName("POST Edit form with invalid data should return to edit_view html with error")
+    @DisplayName("POST Edit form with invalid data should stay in edit_view with error")
     void postEditFormInvalidForm() throws Exception {
         mockMvc.perform(post("/bugdetails/edit/1")
                         .param("title", "s")
-                        .param("description", "Too short title and missing fields"))
+                        .param("des", "Too short title and missing fields"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("edit_view"))
                 .andExpect(model().attributeHasFieldErrors("bugForm", "title", "description"));
 
+    }
+
+    @Test
+    @DisplayName("POST Edit form with duplicate title should stay in edit_view with specific error")
+    void postEditFormDuplicateTitle() throws Exception {
+
+        Mockito.doThrow(new IllegalArgumentException("Title already exists"))
+                .when(bugFormService).updateReport(Mockito.anyLong(), Mockito.any());
+
+        mockMvc.perform(post("/bugdetails/edit/1")
+                        .param("id", "1")
+                        .param("title", "Duplicate")
+                        .param("description", "Valid description")
+                        .param("priority", "LOW")
+                        .param("development", "BACKEND"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("edit_view"))
+                .andExpect(model().attributeHasFieldErrors("bugForm", "title"));
+    }
+
+    @Test
+    @DisplayName("POST Edit form with valid data should redirect to bug details")
+    void postEditForm() throws Exception {
+        mockMvc.perform(post("/bugdetails/edit/1")
+                        .param("id", "1")
+                        .param("title", "Updated Title")
+                        .param("description", "Updated description")
+                        .param("priority", "MEDIUM")
+                        .param("development", "FRONTEND"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/bugdetails?id=1"));
     }
 }
 
