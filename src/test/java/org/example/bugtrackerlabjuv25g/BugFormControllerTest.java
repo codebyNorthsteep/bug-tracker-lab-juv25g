@@ -155,5 +155,17 @@ class BugFormControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/bugdetails?id=1"));
     }
+
+    @Test
+    @DisplayName("GET Confirm delete shows correct view and model")
+    void confirmDelete() throws Exception {
+        var bug = new BugDTO(1L, "Delete Me", "desc", "date", Priority.HIGH, Development.BACKEND);
+        Mockito.when(bugFormService.getReport(1L)).thenReturn(bug);
+
+        mockMvc.perform(get("/bugdetails/delete/confirm").param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("bugdetail"))
+                .andExpect(view().name("confirm_delete"));
+    }
 }
 
