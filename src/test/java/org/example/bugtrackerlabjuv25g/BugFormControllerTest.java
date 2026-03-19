@@ -6,8 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,11 +65,20 @@ class BugFormControllerTest {
 
 
     @Test
-    @DisplayName("GET Homepage is correct")
+    @DisplayName("GET Homepage is correct with paged results")
     void homePage() throws Exception {
+
+        var bug = new BugDTO(1L, "test", "desc", "date", Priority.LOW, Development.BACKEND);
+        List<BugDTO> bugList = List.of(bug);
+        Page<BugDTO> mockPage = new PageImpl<>(bugList, PageRequest.of(0, 20), 1);
+
+        Mockito.when(bugFormService.getPagedBugs(Mockito.any())).thenReturn(mockPage);
+        Mockito.when(bugFormService.getCount()).thenReturn(1L);
+        Mockito.when(bugFormService.getBugsByPriority(Priority.HIGH)).thenReturn(List.of());
+
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("bugs"))
+                .andExpect(model().attributeExists("bugs", "bugsReported", "highPriorityBugs", "totalPages", "currentPage", "pageSize"))
                 .andExpect(view().name("homescreen"));
     }
 
