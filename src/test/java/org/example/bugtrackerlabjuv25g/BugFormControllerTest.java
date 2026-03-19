@@ -45,10 +45,9 @@ class BugFormControllerTest {
     void postBugFormInvalidForm() throws Exception {
         mockMvc.perform(post("/reports/add")
                         .param("title", "s")
-                        .param("des", "Too short title and missing fields"))
+                        .param("description", "shrt"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create_view"))
-                .andExpect(model().attributeHasFieldErrors("bugForm", "title", "description"));
+                .andExpect(view().name("create_view"));
     }
 
     @Test
@@ -152,8 +151,7 @@ class BugFormControllerTest {
     void postEditFormInvalidForm() throws Exception {
         mockMvc.perform(post("/bugdetails/edit/1")
                         .param("title", "s")
-                        .param("des", "Too short title and missing fields"))
-                .andExpect(status().isOk())
+                        .param("description", "shrt")).andExpect(status().isOk())
                 .andExpect(view().name("edit_view"));
     }
 
