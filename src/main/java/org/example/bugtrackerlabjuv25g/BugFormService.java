@@ -55,7 +55,7 @@ public class BugFormService {
         if (updateBugDTO.id() == null || updateBugDTO.id() != existingId) {
             throw new IllegalArgumentException("Path id (" + existingId + ") and payload id (" + updateBugDTO.id() + ") must match");
         }
-
+        // TODO CHECK IF THIS COMMENT IS OUTDATED
         //Will throw another exception when GlobalExceptionHandler is usable
         Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new ResourceNotFound("Bug with id " + existingId + " not found"));
 

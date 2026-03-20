@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -45,7 +47,56 @@ class BugFormServiceTest {
     }
 
     @Test
-    void updateReport() {
+    void updateReportInputValidation() {
+        UpdateBugDTO validUpdate = new UpdateBugDTO(2L, "Test Title", "Some Description", Priority.LOW, Development.BACKEND);
+        UpdateBugDTO inValidUpdate = new UpdateBugDTO(null, "test title", "description", Priority.LOW, Development.BACKEND);
+
+        var nullException = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(1L, null));
+        var lessZero = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(-1L, validUpdate));
+        var nonMatchId = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(1L, validUpdate));
+        var nullId = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(2L, inValidUpdate));
+
+        assertThat(nullException).hasMessage("updateDTO must not be null");
+        assertThat(lessZero).hasMessage("id must be greater than 0");
+        assertThat(nonMatchId).hasMessageContaining("Path id (1) and payload id (2)");
+        assertThat(nullId).hasMessageContaining("Path id (2) and payload id");
+    }
+
+    @Test
+    void updateReportExsistWithTitle() {
+        UpdateBugDTO validUpdate = new UpdateBugDTO(2L, "Test Title", "Some Description", Priority.LOW, Development.BACKEND);
+        Bug oldBug = new Bug();
+        oldBug.setId(2L);
+        oldBug.setTitle("Test Title");
+        oldBug.setDevelopment(Development.BACKEND);
+        Mockito.when(repository.findById(2L)).thenReturn(Optional.of(oldBug));
+        Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+
+        var titleExist = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(2L, validUpdate));
+
+        assertThat(titleExist).hasMessageContaining("A bug with this title already exists in");
+    }
+
+    @Test
+    void updateReportMapperAndData() {
+        UpdateBugDTO validUpdate = new UpdateBugDTO(2L, "Test Title", "Some Description", Priority.LOW, Development.BACKEND);
+        Bug oldBug = new Bug();
+        oldBug.setId(2L);
+        oldBug.setTitle("Test Title");
+        oldBug.setDevelopment(Development.BACKEND);
+        Mockito.when(repository.findById(2L)).thenReturn(Optional.of(oldBug));
+        Mockito.when(repository.save(oldBug)).thenThrow(DataIntegrityViolationException.class);
+
+        var dataViolation = assertThrows(IllegalArgumentException.class, () ->
+                service.updateReport(2L, validUpdate));
+
+        assertThat(dataViolation).hasMessageContaining("Database integrity error: This bug was likely just reported");
     }
 
     @Test
