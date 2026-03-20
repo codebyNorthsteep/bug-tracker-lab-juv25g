@@ -14,7 +14,6 @@ public class BugFormService {
     private final BugRepository bugRepository;
     private final BugMapper mapper;
 
-    //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
     public BugFormService(BugRepository bugRepository, BugMapper mapper) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
@@ -32,7 +31,6 @@ public class BugFormService {
         if (bugForm == null) {
             throw new IllegalArgumentException("bugForm must not be null");
         }
-        //Will throw another exception when GlobalExceptionHandler is usable
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopment(bugForm.title(), bugForm.development())) {
             throw new IllegalArgumentException(
                     "A bug with this title already exists in development area: " + bugForm.development()
