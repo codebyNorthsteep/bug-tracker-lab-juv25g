@@ -19,7 +19,7 @@ class BugMapperTest {
     }
 
     @Test
-    @DisplayName("Should map BugDTO to BugEntity correctly")
+    @DisplayName("Should map CreateDTO to BugEntity correctly")
     void toEntity() {
         CreateBugDTO testBug = new CreateBugDTO("Test bug", "This is a test bug", Priority.LOW, Development.BACKEND);
 
