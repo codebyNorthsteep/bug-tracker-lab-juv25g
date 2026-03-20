@@ -129,7 +129,7 @@ class BugFormServiceTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("GetReport with invalid input throws exceptions")
     void getReport() {
         Bug bug = new Bug();
         bug.setTitle("Test");
@@ -150,6 +150,7 @@ class BugFormServiceTest {
     }
 
     @Test
+    @DisplayName("GetReport with simulated valid input does not throw exception")
     void getReportHappyPath() {
         Bug bug = new Bug();
         bug.setTitle("Test");
@@ -164,7 +165,6 @@ class BugFormServiceTest {
     @Test
     void getSearchByTitleOrDescription() {
     }
-
 
     @Test
     void getPagedBugs() {
