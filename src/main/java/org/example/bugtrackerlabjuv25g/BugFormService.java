@@ -4,7 +4,6 @@ import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public class BugFormService {
     private final BugMapper mapper;
 
     //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
-    public BugFormService(BugRepository bugRepository, BugMapper mapper, PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
+    public BugFormService(BugRepository bugRepository, BugMapper mapper) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
     }
