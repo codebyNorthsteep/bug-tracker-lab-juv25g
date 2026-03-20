@@ -49,14 +49,16 @@ public class BugFormController {
     public String homePage(Model model,
                            @RequestParam(value = "page", defaultValue = "0") int page,
                            @RequestParam(value = "size", defaultValue = "20") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.min(size, 100);
+        Pageable pageable = PageRequest.of(safePage, safeSize);
         Page<BugDTO> paged = bugformService.getPagedBugs(pageable);
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
         model.addAttribute("bugs", paged);
         model.addAttribute("totalPages", paged.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("pageSize", size);
+        model.addAttribute("currentPage", safePage);
+        model.addAttribute("pageSize", safeSize);
         return "homescreen";
     }
 
@@ -123,14 +125,16 @@ public class BugFormController {
         if (input == null || input.isBlank()) {
             return "redirect:/";
         } else {
-            Pageable pageable = PageRequest.of(page, size, Sort.by("priorityOrder"));
+            int safePage = Math.max(page, 0);
+            int safeSize = Math.min(size, 100);
+            Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by("priorityOrder"));
             Page<BugDTO> paged = bugformService.getSearchByTitleOrDescription(input, pageable);
             model.addAttribute("bugs", paged);
             model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
             model.addAttribute("bugsReported", bugformService.getCount());
             model.addAttribute("totalPages", paged.getTotalPages());
-            model.addAttribute("pageSize", size);
-            model.addAttribute("currentPage", page);
+            model.addAttribute("pageSize", safeSize);
+            model.addAttribute("currentPage", safePage);
             model.addAttribute("search", input);
         }
         return "homescreen";

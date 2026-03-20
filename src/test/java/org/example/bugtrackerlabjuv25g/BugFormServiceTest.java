@@ -164,17 +164,23 @@ class BugFormServiceTest {
 
     @Test
     void getSearchByTitleOrDescription() {
+        //Fix test for pageable size and page not being too big or small
     }
 
     @Test
     void getPagedBugs() {
+        //Fix test for pageable size and page not being too big or small
+
     }
 
     @Test
     void getBugsByPriority() {
+        //fix test for invalid prioriy (manuel input in url)
     }
 
     @Test
     void getBugsByDevelopment() {
+        //fix test for invalid dev (manuel input in url)
+
     }
 }
