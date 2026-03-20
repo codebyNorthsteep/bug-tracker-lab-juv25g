@@ -56,4 +56,22 @@ class BugMapperTest {
         assertEquals(bug.getDevelopment(), result.development());
     }
 
+    @Test
+    @DisplayName("Should update BugEntity with UpdateBugDTO correctly")
+    void updateBug() {
+        Bug existingBug = new Bug();
+        existingBug.setTitle("Old title");
+        existingBug.setDescription("Old description");
+        existingBug.setPriority(Priority.MEDIUM);
+        existingBug.setDevelopment(Development.BACKEND);
+
+        UpdateBugDTO updateDTO = new UpdateBugDTO(1L, "New Title", "New Desc", Priority.HIGH, Development.BACKEND);
+
+        bugMapper.updateBug(updateDTO, existingBug);
+
+        assertEquals(updateDTO.title(), existingBug.getTitle());
+        assertEquals(updateDTO.description(), existingBug.getDescription());
+        assertEquals(updateDTO.priority(), existingBug.getPriority());
+        assertEquals(updateDTO.development(), existingBug.getDevelopment());
+    }
 }
