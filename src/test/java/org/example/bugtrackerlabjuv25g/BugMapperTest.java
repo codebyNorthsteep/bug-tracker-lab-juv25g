@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class BugMapperTest {
@@ -52,6 +51,27 @@ class BugMapperTest {
         assertEquals(bug.getTitle(), result.title());
         assertEquals(bug.getDescription(), result.description());
         assertEquals("2026-03-20 10:30:00", result.bugDate());
+        assertEquals(bug.getPriority(), result.priority());
+        assertEquals(bug.getDevelopment(), result.development());
+    }
+
+    @Test
+    @DisplayName("Should handle null bugDate when mapping to BugDTO")
+    void toDTO_withNullBugDate() {
+        Bug bug = new Bug();
+        bug.setId(1L);
+        bug.setTitle("Test bug");
+        bug.setDescription("This is a test bug");
+        bug.setPriority(Priority.HIGH);
+        bug.setDevelopment(Development.FRONTEND);
+        bug.setBugDate(null); // Simulate null bugDate
+
+        BugDTO result = bugMapper.toDTO(bug);
+
+        assertEquals(bug.getId(), result.id());
+        assertEquals(bug.getTitle(), result.title());
+        assertEquals(bug.getDescription(), result.description());
+        assertNull(result.bugDate(), "bugDate should be null when Bug's bugDate is null");
         assertEquals(bug.getPriority(), result.priority());
         assertEquals(bug.getDevelopment(), result.development());
     }
