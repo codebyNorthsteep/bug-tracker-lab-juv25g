@@ -1,10 +1,23 @@
-package org.example.bugtrackerlabjuv25g;
+package org.example.bugtrackerlabjuv25g.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.example.bugtrackerlabjuv25g.model.Development;
+import org.example.bugtrackerlabjuv25g.model.Priority;
 
-public record CreateBugDTO(@NotBlank(message = "Title can not be empty")
+/**
+ * Data Transfer Object (DTO) used for updating an existing bug.
+ * <p>
+ * This record encapsulates the fields required to update a bug's details,
+ * ensuring proper validation and constraints are applied to maintain data consistency.
+ * It is primarily used for transferring update-related data between the client
+ * and server layers.
+ */
+public record UpdateBugDTO(@NotNull
+                           Long id,
+
+                           @NotBlank(message = "Title can not be empty")
                            @Size(min = 3, max = 100)
                            String title,
 
@@ -17,9 +30,4 @@ public record CreateBugDTO(@NotBlank(message = "Title can not be empty")
 
                            @NotNull(message = "Development area must be specified")
                            Development development) {
-
-    public CreateBugDTO() {
-        this("", "", null, null);
-    }
-
 }

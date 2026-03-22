@@ -38,14 +38,14 @@
                 <div class="description-data-boxes">
                     <span class="tiny-title">Bug origin</span>
                     <select class="drop-down" th:field="*{development}">
-                        <option th:each="area : ${T(org.example.bugtrackerlabjuv25g.Development).values()}"
+                        <option th:each="area : ${T(org.example.bugtrackerlabjuv25g.model.Development).values()}"
                                 th:value="${area}" th:text="${area}"></option>
                     </select>
                 </div>
                 <div class="description-data-boxes">
                     <span class="tiny-title">Priority</span>
                     <select class="drop-down" th:field="*{priority}">
-                        <option th:each="priority : ${T(org.example.bugtrackerlabjuv25g.Priority).values()}"
+                        <option th:each="priority : ${T(org.example.bugtrackerlabjuv25g.model.Priority).values()}"
                                 th:value="${priority}" th:text="${priority}"></option>
                     </select>
                 </div>
