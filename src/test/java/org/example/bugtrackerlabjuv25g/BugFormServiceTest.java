@@ -50,8 +50,10 @@ class BugFormServiceTest {
     @DisplayName("SaveReport with valid input but simulated database error throws exception")
     void saveReportWithSimulatedDataViolationThrowsException() {
         CreateBugDTO bug = new CreateBugDTO("Test title", "Some Description", Priority.LOW, Development.BACKEND);
+        Bug mapped = new Bug();
+        Mockito.when(mapper.toEntity(bug)).thenReturn(mapped);
         Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopment("Test title", Development.BACKEND)).thenReturn(false);
-        Mockito.when(repository.save(mapper.toEntity(bug))).thenThrow(DataIntegrityViolationException.class);
+        Mockito.when(repository.save(mapped)).thenThrow(DataIntegrityViolationException.class);
         var dataViolation = assertThrows(IllegalArgumentException.class, () ->
                 service.saveReport(bug));
         assertThat(dataViolation).hasMessageContaining("Database integrity error: This bug was likely just reported by someone else.");

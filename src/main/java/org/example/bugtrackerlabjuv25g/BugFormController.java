@@ -50,7 +50,7 @@ public class BugFormController {
                            @RequestParam(value = "page", defaultValue = "0") int page,
                            @RequestParam(value = "size", defaultValue = "20") int size) {
         int safePage = Math.max(page, 0);
-        int safeSize = Math.min(size, 100);
+        int safeSize = Math.max(1, Math.min(size, 100));
         Pageable pageable = PageRequest.of(safePage, safeSize);
         Page<BugDTO> paged = bugformService.getPagedBugs(pageable);
         model.addAttribute("bugsReported", bugformService.getCount());
@@ -126,7 +126,7 @@ public class BugFormController {
             return "redirect:/";
         } else {
             int safePage = Math.max(page, 0);
-            int safeSize = Math.min(size, 100);
+            int safeSize = Math.max(1, Math.min(size, 100));
             Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by("priorityOrder"));
             Page<BugDTO> paged = bugformService.getSearchByTitleOrDescription(input, pageable);
             model.addAttribute("bugs", paged);
