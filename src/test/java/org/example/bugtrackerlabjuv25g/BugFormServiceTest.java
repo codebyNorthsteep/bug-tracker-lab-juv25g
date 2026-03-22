@@ -179,10 +179,16 @@ class BugFormServiceTest {
         Pageable invalidHighPaged = PageRequest.of(0, 101);
         var highException = assertThrows(IllegalArgumentException.class, () ->
                 service.getSearchByTitleOrDescription("test", invalidHighPaged));
+        var unPagedException = assertThrows(IllegalArgumentException.class, () ->
+                service.getSearchByTitleOrDescription("test", Pageable.unpaged()));
+        var nullPage = assertThrows(IllegalArgumentException.class, () ->
+                service.getSearchByTitleOrDescription("test", null));
         assertDoesNotThrow(() ->
                 service.getSearchByTitleOrDescription("test", validPage));
 
         assertThat(highException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
+        assertThat(unPagedException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
+        assertThat(nullPage).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
     }
 
     @Test
@@ -194,10 +200,16 @@ class BugFormServiceTest {
         Pageable invalidHighPaged = PageRequest.of(0, 101);
         var highException = assertThrows(IllegalArgumentException.class, () ->
                 service.getPagedBugs(invalidHighPaged));
+        var unPagedException = assertThrows(IllegalArgumentException.class, () ->
+                service.getPagedBugs(Pageable.unpaged()));
+        var nullPage = assertThrows(IllegalArgumentException.class, () ->
+                service.getPagedBugs(null));
         assertDoesNotThrow(() ->
                 service.getPagedBugs(validPage));
 
         assertThat(highException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
+        assertThat(unPagedException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
+        assertThat(nullPage).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
 
     }
 
