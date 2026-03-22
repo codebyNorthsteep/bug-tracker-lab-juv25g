@@ -94,6 +94,9 @@ public class BugFormService {
 
 
     public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
+        if (pageable == null || pageable.getPageSize() > 100) {
+            throw new IllegalArgumentException("Page size cannot be less, equal to zero or bigger than 100");
+        }
         return mapPage(bugRepository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(input, input, pageable));
     }
 
@@ -102,6 +105,9 @@ public class BugFormService {
     }
 
     public Page<BugDTO> getPagedBugs(Pageable pageable) {
+        if (pageable == null || pageable.getPageSize() > 100) {
+            throw new IllegalArgumentException("Page size cannot be less, equal to zero or bigger than 100");
+        }
         return mapPage(bugRepository.findAll(pageable));
     }
 

@@ -9,12 +9,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class BugFormServiceTest {
@@ -81,7 +87,7 @@ class BugFormServiceTest {
         oldBug.setTitle("Test Title");
         oldBug.setDevelopment(Development.BACKEND);
         Mockito.when(repository.findById(2L)).thenReturn(Optional.of(oldBug));
-        Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(any(), any(), any())).thenReturn(true);
 
 
         var titleExist = assertThrows(IllegalArgumentException.class, () ->
@@ -164,23 +170,31 @@ class BugFormServiceTest {
 
     @Test
     void getSearchByTitleOrDescription() {
-        //Fix test for pageable size and page not being too big or small
+        Page<Bug> bugPage = new PageImpl<>(List.of(new Bug()));
+        Mockito.when(repository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(Mockito.any(String.class), any(String.class), any(Pageable.class))).thenReturn(bugPage);
+        Pageable validPage = PageRequest.of(0, 10);
+        Pageable invalidHighPaged = PageRequest.of(0, 101);
+        var highException = assertThrows(IllegalArgumentException.class, () ->
+                service.getSearchByTitleOrDescription("test", invalidHighPaged));
+        assertDoesNotThrow(() ->
+                service.getSearchByTitleOrDescription("test", validPage));
+
+        assertThat(highException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
     }
 
     @Test
     void getPagedBugs() {
-        //Fix test for pageable size and page not being too big or small
+        Page<Bug> bugPage = new PageImpl<>(List.of(new Bug()));
+        Mockito.when(repository.findAll(any(Pageable.class))).thenReturn(bugPage);
+        Pageable validPage = PageRequest.of(0, 10);
+        Pageable invalidHighPaged = PageRequest.of(0, 101);
+        var highException = assertThrows(IllegalArgumentException.class, () ->
+                service.getPagedBugs(invalidHighPaged));
+        assertDoesNotThrow(() ->
+                service.getPagedBugs(validPage));
+
+        assertThat(highException).hasMessage("Page size cannot be less, equal to zero or bigger than 100");
 
     }
 
-    @Test
-    void getBugsByPriority() {
-        //fix test for invalid prioriy (manuel input in url)
-    }
-
-    @Test
-    void getBugsByDevelopment() {
-        //fix test for invalid dev (manuel input in url)
-
-    }
 }
