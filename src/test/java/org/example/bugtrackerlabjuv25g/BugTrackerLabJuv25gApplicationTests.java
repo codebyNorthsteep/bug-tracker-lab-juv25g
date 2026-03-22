@@ -39,7 +39,7 @@ class BugTrackerLabJuv25gApplicationTests {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer postgresContainer = new PostgreSQLContainer("postgres:latest");
+    static PostgreSQLContainer postgresContainer = new PostgreSQLContainer("postgres:18.3");
 
     @Test
     void contextLoads() {
