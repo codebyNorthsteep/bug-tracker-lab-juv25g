@@ -169,6 +169,7 @@ class BugFormServiceTest {
     }
 
     @Test
+    @DisplayName("getSearchBy... with pageable result with invalid page size throws exception")
     void getSearchByTitleOrDescription() {
         Page<Bug> bugPage = new PageImpl<>(List.of(new Bug()));
         Mockito.when(repository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(Mockito.any(String.class), any(String.class), any(Pageable.class))).thenReturn(bugPage);
@@ -183,6 +184,7 @@ class BugFormServiceTest {
     }
 
     @Test
+    @DisplayName("getPagedBugs with invalid page size throws exception")
     void getPagedBugs() {
         Page<Bug> bugPage = new PageImpl<>(List.of(new Bug()));
         Mockito.when(repository.findAll(any(Pageable.class))).thenReturn(bugPage);
