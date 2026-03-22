@@ -1,5 +1,10 @@
-package org.example.bugtrackerlabjuv25g;
+package org.example.bugtrackerlabjuv25g.model;
 
+/**
+ * Represents the areas of software development in a system.
+ * This enumeration contains the possible development areas, such as FRONTEND and BACKEND.
+ * It also provides utility methods to work with these areas.
+ */
 public enum Development {
     FRONTEND,
     BACKEND;

@@ -1,6 +1,11 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.example.bugtrackerlabjuv25g.controller.BugFormController;
+import org.example.bugtrackerlabjuv25g.dto.BugDTO;
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
+import org.example.bugtrackerlabjuv25g.model.Development;
+import org.example.bugtrackerlabjuv25g.model.Priority;
+import org.example.bugtrackerlabjuv25g.service.BugFormService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,6 +23,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * This class contains unit tests for the {@code BugFormController} class, responsible for handling web requests related
+ * to bug reports. The test cases ensure the controller's endpoints behave as expected, including proper interactions
+ * with the model, view rendering, and service calls.
+ * <p>
+ * Annotations:
+ * - {@code @WebMvcTest}: Used to test Spring MVC controllers in isolation, loading only the necessary components.
+ * - {@code @Autowired}: Injects the {@code MockMvc} object to perform HTTP request testing.
+ * - {@code @MockitoBean}: Replaces the actual service with a mock implementation to enable controlled behavior in tests.
+ * <p>
+ * Key Tests:
+ * - **GET Requests**:
+ * - Tests for rendering correct views (e.g., displaying bug addition, detail, or edit forms).
+ * - Verifies model attributes are properly set for the intended views.
+ * - Handles non-existent resources by testing specific error scenarios.
+ * - **POST Requests**:
+ * - Validates successful form submissions redirect to the expected endpoints or views.
+ * - Ensures invalid or duplicate data results in appropriate error handling and stays on the correct page.
+ * - **Edge Cases**:
+ * - Validates behavior for scenarios such as duplicate titles, missing attributes, or invalid data inputs.
+ * - Ensures exceptions (e.g., {@code ResourceNotFound}) are properly handled and result in expected error views.
+ * <p>
+ * Mocked Dependencies:
+ * - {@code BugFormService}: Responsible for handling business logic, such as fetching, saving, or updating bug reports.
+ * - {@code MockMvc}: Simulates HTTP interactions, allowing end-to-end testing of controller methods and their interactions.
+ */
 @WebMvcTest(BugFormController.class)
 class BugFormControllerTest {
 
