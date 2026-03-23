@@ -1,4 +1,4 @@
-package org.example.bugtrackerlabjuv25g;
+package org.example.bugtrackerlabjuv25g.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +9,14 @@ import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a software development bug for tracking purposes.
+ * <p>
+ * This class is annotated as an entity, indicating it is mapped to a database table.
+ * It defines attributes to capture essential bug details such as title, description,
+ * date of occurrence, priority level, and the related development area.
+ * Additional constraints are applied to ensure data integrity and validation.
+ */
 @Entity
 // Database-level constraint to prevent duplicate bug-title in the same development area.
 @Table(name = "bugs", uniqueConstraints = {@UniqueConstraint(columnNames = {"title", "development"}, name = "duplicated_bug_title_dev")})

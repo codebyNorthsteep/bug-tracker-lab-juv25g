@@ -1,5 +1,12 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.example.bugtrackerlabjuv25g.dto.BugDTO;
+import org.example.bugtrackerlabjuv25g.dto.CreateBugDTO;
+import org.example.bugtrackerlabjuv25g.dto.UpdateBugDTO;
+import org.example.bugtrackerlabjuv25g.mapper.BugMapper;
+import org.example.bugtrackerlabjuv25g.model.Bug;
+import org.example.bugtrackerlabjuv25g.model.Development;
+import org.example.bugtrackerlabjuv25g.model.Priority;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +16,27 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+/**
+ * Unit tests for the BugMapper class, which validates the correct mapping
+ * between DTOs and the Bug entity.
+ * <p>
+ * Responsibilities:
+ * - Verifying that a CreateBugDTO is correctly mapped to a Bug entity.
+ * - Verifying that a Bug entity is correctly mapped to a BugDTO.
+ * - Ensuring proper handling of edge cases like null values during the mapping process.
+ * - Validating the functionality of updating a Bug entity with an UpdateBugDTO.
+ * <p>
+ * Test Methods:
+ * - {@code toEntity}: Tests mapping from CreateBugDTO to Bug entity.
+ * - {@code toDTO}: Tests mapping from Bug entity to BugDTO.
+ * - {@code toDTO_withNullBugDate}: Tests handling of null bugDate when mapping to BugDTO.
+ * - {@code updateBug}: Tests updating a Bug entity with an UpdateBugDTO.
+ * <p>
+ * Annotations:
+ * - {@code @BeforeEach}: Sets up the required BugMapper instance before each test method.
+ * - {@code @Test}: Marks methods as test cases.
+ * - {@code @DisplayName}: Describes the purpose of a test case for better readability.
+ */
 class BugMapperTest {
 
     private BugMapper bugMapper;
