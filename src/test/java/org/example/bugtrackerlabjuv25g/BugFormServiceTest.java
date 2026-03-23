@@ -1,6 +1,14 @@
 package org.example.bugtrackerlabjuv25g;
 
+import org.example.bugtrackerlabjuv25g.dto.BugDTO;
+import org.example.bugtrackerlabjuv25g.dto.CreateBugDTO;
+import org.example.bugtrackerlabjuv25g.dto.UpdateBugDTO;
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
+import org.example.bugtrackerlabjuv25g.mapper.BugMapper;
+import org.example.bugtrackerlabjuv25g.model.Bug;
+import org.example.bugtrackerlabjuv25g.model.Development;
+import org.example.bugtrackerlabjuv25g.model.Priority;
+import org.example.bugtrackerlabjuv25g.repository.BugRepository;
 import org.example.bugtrackerlabjuv25g.service.BugFormService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +31,30 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * Unit tests for the BugFormService class.
+ * This test class ensures the BugFormService methods function correctly
+ * under various conditions, including invalid inputs, database errors, and happy paths.
+ * Mocked dependencies of the BugFormService include BugRepository and BugMapper.
+ * <p>
+ * The following behaviors are tested:
+ * - Validation checks for null or invalid input parameters in methods such as saveReport, updateReport,
+ * deleteReport, getReport, and getSearchByTitleOrDescription.
+ * - Handling of duplicate titles while saving or updating bugs.
+ * - Exception handling when a database integrity error occurs during save and update operations.
+ * - Correct behavior of delete and get operations, including exception scenarios when a resource is not found.
+ * - Pagination validation in search operations to ensure proper limits on page size.
+ * - Mapping between DTOs and entity objects using BugMapper.
+ * <p>
+ * This test class employs JUnit 5 as the testing framework along with Mockito for dependency mocking.
+ * <p>
+ * Annotations used:
+ * - @ExtendWith: Integrates Mockito into the testing framework.
+ * - @Mock: Creates mock instances of dependencies for testing.
+ * - @InjectMocks: Automatically injects mocked dependencies into the service under test.
+ * - @Test: Marks individual test methods.
+ * - @DisplayName: Provides a custom description for test methods to improve readability of test reports.
+ */
 @ExtendWith(MockitoExtension.class)
 class BugFormServiceTest {
 
@@ -54,7 +86,7 @@ class BugFormServiceTest {
         Bug mapped = new Bug();
         Mockito.when(mapper.toEntity(bug)).thenReturn(mapped);
         Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopment("Test title", Development.BACKEND)).thenReturn(false);
-        Mockito.when(repository.save(mapped)).thenThrow(DataIntegrityViolationException.class);
+        Mockito.when(repository.save(mapped)).thenThrow(DuplicateKeyException.class);
         var dataViolation = assertThrows(IllegalArgumentException.class, () ->
                 service.saveReport(bug));
         assertThat(dataViolation).hasMessageContaining("Database integrity error: This bug was likely just reported by someone else.");
@@ -108,7 +140,7 @@ class BugFormServiceTest {
         oldBug.setTitle("Test Title");
         oldBug.setDevelopment(Development.BACKEND);
         Mockito.when(repository.findById(2L)).thenReturn(Optional.of(oldBug));
-        Mockito.when(repository.save(oldBug)).thenThrow(DataIntegrityViolationException.class);
+        Mockito.when(repository.save(oldBug)).thenThrow(DuplicateKeyException.class);
 
         var dataViolation = assertThrows(IllegalArgumentException.class, () ->
                 service.updateReport(2L, validUpdate));
@@ -123,18 +155,21 @@ class BugFormServiceTest {
                 service.deleteReport(null));
         var idLessZero = assertThrows(IllegalArgumentException.class, () ->
                 service.deleteReport(-1L));
-        Mockito.when(repository.existsById(1L)).thenReturn(false);
+        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
         var resourceException = assertThrows(ResourceNotFound.class, () ->
-                service.deleteReport(1L));
-
-
-        Mockito.when(repository.existsById(1L)).thenReturn(true);
-        assertDoesNotThrow(() ->
                 service.deleteReport(1L));
 
         assertThat(idNull).hasMessage("id must be greater than 0");
         assertThat(idLessZero).hasMessage("id must be greater than 0");
         assertThat(resourceException).hasMessageContaining("Cannot delete bug: id");
+    }
+
+    @Test
+    @DisplayName("Delete report does not throw exception with valid input")
+    void deleteReportWithValidInput() {
+        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(new Bug()));
+        assertDoesNotThrow(() ->
+                service.deleteReport(1L));
     }
 
     @Test
