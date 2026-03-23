@@ -9,7 +9,7 @@ import org.example.bugtrackerlabjuv25g.model.Bug;
 import org.example.bugtrackerlabjuv25g.model.Development;
 import org.example.bugtrackerlabjuv25g.model.Priority;
 import org.example.bugtrackerlabjuv25g.repository.BugRepository;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class BugFormService {
         }
         try {
             bugRepository.save(mapper.toEntity(bugForm));
-        } catch (DuplicateKeyException ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
         }
     }
@@ -122,7 +122,7 @@ public class BugFormService {
         mapper.updateBug(updateBugDTO, existingBug);
         try {
             bugRepository.save(existingBug);
-        } catch (DuplicateKeyException ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
         }
     }

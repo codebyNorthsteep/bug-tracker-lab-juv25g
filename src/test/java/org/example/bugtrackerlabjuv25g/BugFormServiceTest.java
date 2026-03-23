@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -86,7 +86,7 @@ class BugFormServiceTest {
         Bug mapped = new Bug();
         Mockito.when(mapper.toEntity(bug)).thenReturn(mapped);
         Mockito.when(repository.existsByTitleIgnoreCaseAndDevelopment("Test title", Development.BACKEND)).thenReturn(false);
-        Mockito.when(repository.save(mapped)).thenThrow(DuplicateKeyException.class);
+        Mockito.when(repository.save(mapped)).thenThrow(DataIntegrityViolationException.class);
         var dataViolation = assertThrows(IllegalArgumentException.class, () ->
                 service.saveReport(bug));
         assertThat(dataViolation).hasMessageContaining("Database integrity error: This bug was likely just reported by someone else.");
@@ -140,7 +140,7 @@ class BugFormServiceTest {
         oldBug.setTitle("Test Title");
         oldBug.setDevelopment(Development.BACKEND);
         Mockito.when(repository.findById(2L)).thenReturn(Optional.of(oldBug));
-        Mockito.when(repository.save(oldBug)).thenThrow(DuplicateKeyException.class);
+        Mockito.when(repository.save(oldBug)).thenThrow(DataIntegrityViolationException.class);
 
         var dataViolation = assertThrows(IllegalArgumentException.class, () ->
                 service.updateReport(2L, validUpdate));
