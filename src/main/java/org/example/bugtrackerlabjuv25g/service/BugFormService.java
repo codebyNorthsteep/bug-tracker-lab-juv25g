@@ -9,7 +9,7 @@ import org.example.bugtrackerlabjuv25g.model.Bug;
 import org.example.bugtrackerlabjuv25g.model.Development;
 import org.example.bugtrackerlabjuv25g.model.Priority;
 import org.example.bugtrackerlabjuv25g.repository.BugRepository;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
@@ -20,10 +20,10 @@ import java.util.List;
 /**
  * Service layer responsible for bug tracking business logic.
  * Main responsibilities include:
- * Coordinating CRUD operations between the controller and {@link BugRepository}.</li>
- * Enforcing business rules, such as unique titles per development area.</li>
- * Handling data transformation between entities and DTOs via {@link BugMapper}.</li>
- * Providing paginated and filtered results for optimized data retrieval.</li>
+ * Coordinating CRUD operations between the controller and {@link BugRepository}.
+ * Enforcing business rules, such as unique titles per development area.
+ * Handling data transformation between entities and DTOs via {@link BugMapper}.
+ * Providing paginated and filtered results for optimized data retrieval.
  *
  */
 @Service
@@ -82,7 +82,7 @@ public class BugFormService {
         }
         try {
             bugRepository.save(mapper.toEntity(bugForm));
-        } catch (DataIntegrityViolationException ex) {
+        } catch (DuplicateKeyException ex) {
             throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
         }
     }
@@ -127,7 +127,7 @@ public class BugFormService {
         mapper.updateBug(updateBugDTO, existingBug);
         try {
             bugRepository.save(existingBug);
-        } catch (DataIntegrityViolationException ex) {
+        } catch (DuplicateKeyException ex) {
             throw new IllegalArgumentException("Database integrity error: This bug was likely just reported by someone else.", ex);
         }
     }
@@ -146,11 +146,10 @@ public class BugFormService {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("id must be greater than 0");
         }
-        if (!bugRepository.existsById(id)) {
-            throw new ResourceNotFound("Cannot delete bug: id " + id + " does not exist");
-        }
+        Bug existingBug = bugRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Cannot delete bug: id " + id + " does not exist"));
 
-        bugRepository.deleteById(id);
+        bugRepository.delete(existingBug);
     }
 
     /**

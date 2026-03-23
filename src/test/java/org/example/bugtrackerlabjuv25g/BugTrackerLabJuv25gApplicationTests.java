@@ -26,7 +26,7 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  * <p>
  * Fields:
  * - {@code postgresContainer}: A {@link PostgreSQLContainer} configured to use a PostgreSQL
- * image with version 15.3. This container is used to simulate a PostgreSQL database for
+ * image with version 18.3. This container is used to simulate a PostgreSQL database for
  * integration tests.
  * <p>
  * Methods:
