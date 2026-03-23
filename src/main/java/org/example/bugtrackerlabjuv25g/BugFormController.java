@@ -1,6 +1,7 @@
 package org.example.bugtrackerlabjuv25g;
 
 import jakarta.validation.Valid;
+import org.example.bugtrackerlabjuv25g.service.BugFormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

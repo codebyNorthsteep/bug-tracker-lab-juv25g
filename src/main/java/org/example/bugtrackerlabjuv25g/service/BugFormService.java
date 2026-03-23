@@ -1,5 +1,6 @@
-package org.example.bugtrackerlabjuv25g;
+package org.example.bugtrackerlabjuv25g.service;
 
+import org.example.bugtrackerlabjuv25g.*;
 import org.example.bugtrackerlabjuv25g.exception.ResourceNotFound;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
