@@ -32,8 +32,7 @@ public class BugFormService {
     private final BugRepository bugRepository;
     private final BugMapper mapper;
 
-    //Dependencyinjekta även Mapper, låter Spring injekta istället Mapper är en component
-    public BugFormService(BugRepository bugRepository, BugMapper mapper, PageableHandlerMethodArgumentResolverCustomizer pageableCustomizer) {
+    public BugFormService(BugRepository bugRepository, BugMapper mapper) {
         this.bugRepository = bugRepository;
         this.mapper = mapper;
     }
@@ -74,7 +73,6 @@ public class BugFormService {
         if (bugForm == null) {
             throw new IllegalArgumentException("bugForm must not be null");
         }
-        //Will throw another exception when GlobalExceptionHandler is usable
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopment(bugForm.title(), bugForm.development())) {
             throw new IllegalArgumentException(
                     "A bug with this title already exists in development area: " + bugForm.development()
@@ -113,8 +111,6 @@ public class BugFormService {
         if (updateBugDTO.id() == null || updateBugDTO.id() != existingId) {
             throw new IllegalArgumentException("Path id (" + existingId + ") and payload id (" + updateBugDTO.id() + ") must match");
         }
-
-        //Will throw another exception when GlobalExceptionHandler is usable
         Bug existingBug = bugRepository.findById(existingId).orElseThrow(() -> new ResourceNotFound("Bug with id " + existingId + " not found"));
 
         if (bugRepository.existsByTitleIgnoreCaseAndDevelopmentAndIdNot(
@@ -180,6 +176,9 @@ public class BugFormService {
      * @return A page of BugDTO objects that match the search criteria.
      */
     public Page<BugDTO> getSearchByTitleOrDescription(String input, Pageable pageable) {
+        if (pageable == null || pageable.isUnpaged() || pageable.getPageSize() > 100) {
+            throw new IllegalArgumentException("Page size cannot be less, equal to zero or bigger than 100");
+        }
         return mapPage(bugRepository.findDistinctByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(input, input, pageable));
     }
 
@@ -199,6 +198,9 @@ public class BugFormService {
      * @return a Page containing BugDTO objects
      */
     public Page<BugDTO> getPagedBugs(Pageable pageable) {
+        if (pageable == null || pageable.isUnpaged() || pageable.getPageSize() > 100) {
+            throw new IllegalArgumentException("Page size cannot be less, equal to zero or bigger than 100");
+        }
         return mapPage(bugRepository.findAll(pageable));
     }
 
