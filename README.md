@@ -26,7 +26,7 @@ med stöd för prioriteringar, utvecklingsområden och fullständig bugdokumenta
 
 ### Förutsättningar
 
-- Java 25+
+- Java 25
 - Maven 3.6+
 - Docker & Docker Compose (valfritt)
 
