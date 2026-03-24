@@ -5,11 +5,11 @@ med stöd för prioriteringar, utvecklingsområden och fullständig bugdokumenta
 
 ## Funktioner
 
-- 📝 **Bugdokumentation**: Dokumentera buggar med titel, beskrivning, utveckningsområde och prioritet
+- 📝 **Bugdokumentation**: Dokumentera buggar med titel, beskrivning, utvecklingsområde och prioritet
 - 📊 **Prioriteter & Utvecklingsområden**: Klassificera buggar efter allvarlighetsgrad (HIGH/MEDIUM/LOW) och
   utvecklingsområde (BACKEND/FRONTEND)
 - 🔍 **Sök & Filtrering**: Hitta och filtrera buggar efter prioritet eller utvecklingsområde
-- 📄 **Pagination**: Effektiv hantering av stora mängder buggarapporter
+- 📄 **Pagination**: Effektiv hantering av stora mängder buggrapporter
 - 🗓️ **Sortering**: Sortera buggar efter datum eller prioritet
 - 📋 **Detaljer & Historik**: Se fullständig information och historik för varje bugrapport
 - ✅ **Validering**: Säkerställer dataintegritet och korrekt dokumentation
@@ -53,7 +53,7 @@ docker-compose up
 
 ## Projektstruktur
 
-```
+```text
 src/main/
 ├── java/org/example/bugtrackerlabjuv25g/
 │   ├── controller/      # HTTP-endpoints
