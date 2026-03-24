@@ -1,15 +1,18 @@
 # Bug Tracker Lab
 
-En Spring Boot-baserad webbapplikation för att hantera och spåra buggar i utvecklingsprojekt, likt en mini Jira.
+En Spring Boot-baserad webbapplikation för att hantera och dokumentera buggar i utvecklingsprojekt. En mini Jira-klon
+med stöd för prioriteringar, utvecklingsområden och fullständig bugdokumentation.
 
 ## Funktioner
 
-- 🐛 **CRUD-operationer**: Skapa, läs, uppdatera och ta bort buggar
-- 🔍 **Sök**: Sök buggar efter titel eller beskrivning
-- 📊 **Filtrering**: Filtrera buggar efter prioritet eller utvecklingsområde
-- 📄 **Pagination**: Effektiv hantering av stora mängder buggar
+- 📝 **Bugdokumentation**: Dokumentera buggar med titel, beskrivning, utveckningsområde och prioritet
+- 📊 **Prioriteter & Utvecklingsområden**: Klassificera buggar efter allvarlighetsgrad (HIGH/MEDIUM/LOW) och
+  utvecklingsområde (BACKEND/FRONTEND)
+- 🔍 **Sök & Filtrering**: Hitta och filtrera buggar efter prioritet eller utvecklingsområde
+- 📄 **Pagination**: Effektiv hantering av stora mängder buggarapporter
 - 🗓️ **Sortering**: Sortera buggar efter datum eller prioritet
-- 📋 **Formulärvalidering**: Säkerställer dataintegritet
+- 📋 **Detaljer & Historik**: Se fullständig information och historik för varje bugrapport
+- ✅ **Validering**: Säkerställer dataintegritet och korrekt dokumentation
 
 ## Teknikstack
 
