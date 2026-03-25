@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 
 /**
  * Controller responsible for handling bug report-related views and actions.
@@ -26,11 +28,18 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class BugFormController {
     private static final Logger logger = LoggerFactory.getLogger(BugFormController.class);
+    private static final Set<String> ALLOWED_SORTS = Set.of(
+            "id", "title", "description", "development", "priorityOrder", "bugDate");
+
 
     BugFormService bugformService;
 
     public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
+    }
+
+    private String resolveSortOrder(String sort) {
+        return ALLOWED_SORTS.contains(sort) ? sort : "id";
     }
 
     /**
@@ -82,10 +91,15 @@ public class BugFormController {
     @GetMapping("/")
     public String homePage(Model model,
                            @RequestParam(value = "page", defaultValue = "0") int page,
-                           @RequestParam(value = "size", defaultValue = "20") int size) {
+                           @RequestParam(value = "size", defaultValue = "20") int size,
+                           @RequestParam(value = "sort", defaultValue = "id") String sortOrder,
+                           @RequestParam(value = "dir", defaultValue = "asc") String dir) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.max(1, Math.min(size, 100));
-        Pageable pageable = PageRequest.of(safePage, safeSize);
+        Sort sorting = dir.equals("asc") ? Sort.by(resolveSortOrder(sortOrder)).ascending()
+                : Sort.by(sortOrder).descending();
+
+        Pageable pageable = PageRequest.of(safePage, safeSize, sorting);
         Page<BugDTO> paged = bugformService.getPagedBugs(pageable);
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
@@ -93,6 +107,9 @@ public class BugFormController {
         model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("currentPage", safePage);
         model.addAttribute("pageSize", safeSize);
+        model.addAttribute("sortOrder", resolveSortOrder(sortOrder));
+        model.addAttribute("currentDir", dir);
+        model.addAttribute("reverseDir", dir.equals("asc") ? "desc" : "asc");
         return "homescreen";
     }
 
@@ -209,13 +226,14 @@ public class BugFormController {
     public String getSearchResult(@RequestParam(required = false) String input,
                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "20") int size,
+                                  @RequestParam(value = "sort", defaultValue = "id") String sortOrder,
                                   Model model) {
         if (input == null || input.isBlank()) {
             return "redirect:/";
         } else {
             int safePage = Math.max(page, 0);
             int safeSize = Math.max(1, Math.min(size, 100));
-            Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by("priorityOrder"));
+            Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by(resolveSortOrder(sortOrder)));
             Page<BugDTO> paged = bugformService.getSearchByTitleOrDescription(input, pageable);
             model.addAttribute("bugs", paged);
             model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
@@ -224,6 +242,7 @@ public class BugFormController {
             model.addAttribute("pageSize", safeSize);
             model.addAttribute("currentPage", safePage);
             model.addAttribute("search", input);
+            model.addAttribute("sortOrder", resolveSortOrder(sortOrder));
         }
         return "homescreen";
     }
