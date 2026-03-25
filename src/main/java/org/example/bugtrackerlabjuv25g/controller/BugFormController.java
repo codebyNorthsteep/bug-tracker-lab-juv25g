@@ -83,11 +83,14 @@ public class BugFormController {
     public String homePage(Model model,
                            @RequestParam(value = "page", defaultValue = "0") int page,
                            @RequestParam(value = "size", defaultValue = "20") int size,
-                           @RequestParam(value = "sort", defaultValue = "id") String sortOrder) {
+                           @RequestParam(value = "sort", defaultValue = "id") String sortOrder,
+                           @RequestParam(value = "dir", defaultValue = "asc") String dir) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.max(1, Math.min(size, 100));
-        System.out.println("sort order: " + sortOrder);
-        Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by(sortOrder));
+        Sort sorting = dir.equals("asc") ? Sort.by(sortOrder).ascending()
+                : Sort.by(sortOrder).descending();
+
+        Pageable pageable = PageRequest.of(safePage, safeSize, sorting);
         Page<BugDTO> paged = bugformService.getPagedBugs(pageable);
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
@@ -96,6 +99,8 @@ public class BugFormController {
         model.addAttribute("currentPage", safePage);
         model.addAttribute("pageSize", safeSize);
         model.addAttribute("sortOrder", sortOrder);
+        model.addAttribute("currentDir", dir);
+        model.addAttribute("reverseDir", dir.equals("asc") ? "desc" : "asc");
         return "homescreen";
     }
 

@@ -37,22 +37,22 @@
                 <thead>
                 <tr th:with="baseUrl=${search != null ? '/search' : '/'}">
                     <th class="col-id"><a
-                            th:href="@{{path}(input=${search}, sort='id', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Id</a>
+                            th:href="@{{path}(input=${search}, sort='id', dir=${sortOrder == 'id' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Id</a>
                     </th>
                     <th class="col-title"><a
-                            th:href="@{{path}(input=${search}, sort='title', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Title</a>
+                            th:href="@{{path}(input=${search}, sort='title', dir=${sortOrder =='title' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Title</a>
                     </th>
                     <th class="col-description"><a
-                            th:href="@{{path}(input=${search}, sort='description', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Description</a>
+                            th:href="@{{path}(input=${search}, sort='description', dir=${sortOrder =='description' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Description</a>
                     </th>
                     <th class="col-priority"><a
-                            th:href="@{{path}(input=${search}, sort='priorityOrder', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Priority</a>
+                            th:href="@{{path}(input=${search}, sort='priorityOrder', dir=${sortOrder =='priorityOrder' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Priority</a>
                     </th>
                     <th class="col-area"><a
-                            th:href="@{{path}(input=${search}, sort='development', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Area</a>
+                            th:href="@{{path}(input=${search}, sort='development', dir=${sortOrder =='development' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Area</a>
                     </th>
                     <th class="col-date"><a
-                            th:href="@{{path}(input=${search}, sort='bugDate', page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Created</a>
+                            th:href="@{{path}(input=${search}, sort='bugDate', dir=${sortOrder =='bugDate' ? reverseDir : 'asc'}, page=${currentPage}, size=${pageSize}, path=${baseUrl})}">Created</a>
                     </th>
                 </tr>
                 </thead>
@@ -91,11 +91,11 @@
             </select>
         </div>
         <a th:if="${currentPage > 0}"
-           th:href="@{{path}(sort=${sortOrder},input=${search}, page=${currentPage - 1}, size=${pageSize}, path=${baseUrl})}"
+           th:href="@{{path}(sort=${sortOrder}, dir=${currentDir}, input=${search}, page=${currentPage - 1}, size=${pageSize}, path=${baseUrl})}"
            class="buttons">Previous</a>
         <span>Page <span th:text="${currentPage + 1}"> </span> of <span th:text="${totalPages}"></span></span>
         <a th:if="${currentPage < (totalPages - 1)}"
-           th:href="@{{path}(sort=${sortOrder}, input=${search}, page=${currentPage + 1}, size=${pageSize}, path=${baseUrl})}"
+           th:href="@{{path}(sort=${sortOrder}, dir=${currentDir}, input=${search}, page=${currentPage + 1}, size=${pageSize}, path=${baseUrl})}"
            class="buttons">Next</a>
     </div>
 </div>
