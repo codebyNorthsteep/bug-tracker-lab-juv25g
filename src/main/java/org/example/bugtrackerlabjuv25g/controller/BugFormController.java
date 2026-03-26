@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 
 /**
  * Controller responsible for handling bug report-related views and actions.
@@ -26,11 +28,18 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class BugFormController {
     private static final Logger logger = LoggerFactory.getLogger(BugFormController.class);
+    private static final Set<String> ALLOWED_SORTS = Set.of(
+            "id", "title", "description", "development", "priorityOrder", "bugDate");
+
 
     BugFormService bugformService;
 
     public BugFormController(BugFormService bugformService) {
         this.bugformService = bugformService;
+    }
+
+    private String resolveSortOrder(String sort) {
+        return ALLOWED_SORTS.contains(sort) ? sort : "id";
     }
 
     /**
@@ -71,21 +80,28 @@ public class BugFormController {
     }
 
     /**
-     * Handles the request to load the home page of the bug tracker application.
-     * Populates the model with the necessary attributes for rendering the home screen.
+     * Handles the home page request, retrieves paginated bug data, and populates the model with various attributes
+     * required for rendering the home page view.
      *
-     * @param model The Model object used to add attributes for rendering the view.
-     * @param page  The current page number for pagination (default is 0).
-     * @param size  The number of items to display per page in the paginated bug list (default is 20).
-     * @return The name of the Thymeleaf template for the home screen.
+     * @param model the {@code Model} object used to add attributes for rendering the view
+     * @param page the current page number to be displayed, defaults to 0 if not provided
+     * @param size the number of items to be displayed per page, defaults to 20, with a maximum limit of 100
+     * @param sortOrder the attribute by which the bugs should be sorted, defaults to "id"
+     * @param dir the direction of sorting, either "asc" for ascending or "desc" for descending, defaults to "asc"
+     * @return the name of the view to be rendered, in this case "homescreen"
      */
     @GetMapping("/")
     public String homePage(Model model,
                            @RequestParam(value = "page", defaultValue = "0") int page,
-                           @RequestParam(value = "size", defaultValue = "20") int size) {
+                           @RequestParam(value = "size", defaultValue = "20") int size,
+                           @RequestParam(value = "sort", defaultValue = "id") String sortOrder,
+                           @RequestParam(value = "dir", defaultValue = "asc") String dir) {
         int safePage = Math.max(page, 0);
         int safeSize = Math.max(1, Math.min(size, 100));
-        Pageable pageable = PageRequest.of(safePage, safeSize);
+        Sort sorting = dir.equals("asc") ? Sort.by(resolveSortOrder(sortOrder)).ascending()
+                : Sort.by(sortOrder).descending();
+
+        Pageable pageable = PageRequest.of(safePage, safeSize, sorting);
         Page<BugDTO> paged = bugformService.getPagedBugs(pageable);
         model.addAttribute("bugsReported", bugformService.getCount());
         model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
@@ -93,6 +109,9 @@ public class BugFormController {
         model.addAttribute("totalPages", paged.getTotalPages());
         model.addAttribute("currentPage", safePage);
         model.addAttribute("pageSize", safeSize);
+        model.addAttribute("sortOrder", resolveSortOrder(sortOrder));
+        model.addAttribute("currentDir", dir);
+        model.addAttribute("reverseDir", dir.equals("asc") ? "desc" : "asc");
         return "homescreen";
     }
 
@@ -194,28 +213,29 @@ public class BugFormController {
     }
 
     /**
-     * Handles search requests by filtering bug reports based on the input query
-     * and paginating the results. If the input query is empty or not provided,
-     * the user is redirected to the homepage.
+     * Handles HTTP GET requests for searching bugs based on the provided input,
+     * and returns the search results in a paginated and sorted format.
+     * If the input is blank or null, redirects to the homepage.
      *
-     * @param input Optional search query to filter bug reports by title or description.
-     * @param page  The page index for pagination, defaults to 0 if not provided.
-     * @param size  The size of items per page for pagination, defaults to 20 if not provided.
-     * @param model The Model object to store attributes for rendering the view.
-     * @return The name of the view template to be rendered. Redirects to the homepage
-     *         if the input query is empty or blank, otherwise returns "homescreen".
+     * @param input       The search query input to filter bugs by title or description (optional).
+     * @param page        The page number for pagination (default is 0).
+     * @param size        The number of results per page (default is 20, maximum is 100).
+     * @param sortOrder   The sorting criteria for results (default is "id").
+     * @param model       The model object to pass attributes to the view layer.
+     * @return The name of the view template to be rendered.
      */
     @GetMapping("/search")
     public String getSearchResult(@RequestParam(required = false) String input,
                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "20") int size,
+                                  @RequestParam(value = "sort", defaultValue = "id") String sortOrder,
                                   Model model) {
         if (input == null || input.isBlank()) {
             return "redirect:/";
         } else {
             int safePage = Math.max(page, 0);
             int safeSize = Math.max(1, Math.min(size, 100));
-            Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by("priorityOrder"));
+            Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by(resolveSortOrder(sortOrder)));
             Page<BugDTO> paged = bugformService.getSearchByTitleOrDescription(input, pageable);
             model.addAttribute("bugs", paged);
             model.addAttribute("highPriorityBugs", bugformService.getBugsByPriority(Priority.HIGH).size());
@@ -224,6 +244,7 @@ public class BugFormController {
             model.addAttribute("pageSize", safeSize);
             model.addAttribute("currentPage", safePage);
             model.addAttribute("search", input);
+            model.addAttribute("sortOrder", resolveSortOrder(sortOrder));
         }
         return "homescreen";
     }
