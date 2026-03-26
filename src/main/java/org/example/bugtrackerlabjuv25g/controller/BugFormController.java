@@ -80,13 +80,15 @@ public class BugFormController {
     }
 
     /**
-     * Handles the request to load the home page of the bug tracker application.
-     * Populates the model with the necessary attributes for rendering the home screen.
+     * Handles the home page request, retrieves paginated bug data, and populates the model with various attributes
+     * required for rendering the home page view.
      *
-     * @param model The Model object used to add attributes for rendering the view.
-     * @param page  The current page number for pagination (default is 0).
-     * @param size  The number of items to display per page in the paginated bug list (default is 20).
-     * @return The name of the Thymeleaf template for the home screen.
+     * @param model the {@code Model} object used to add attributes for rendering the view
+     * @param page the current page number to be displayed, defaults to 0 if not provided
+     * @param size the number of items to be displayed per page, defaults to 20, with a maximum limit of 100
+     * @param sortOrder the attribute by which the bugs should be sorted, defaults to "id"
+     * @param dir the direction of sorting, either "asc" for ascending or "desc" for descending, defaults to "asc"
+     * @return the name of the view to be rendered, in this case "homescreen"
      */
     @GetMapping("/")
     public String homePage(Model model,
@@ -211,16 +213,16 @@ public class BugFormController {
     }
 
     /**
-     * Handles search requests by filtering bug reports based on the input query
-     * and paginating the results. If the input query is empty or not provided,
-     * the user is redirected to the homepage.
+     * Handles HTTP GET requests for searching bugs based on the provided input,
+     * and returns the search results in a paginated and sorted format.
+     * If the input is blank or null, redirects to the homepage.
      *
-     * @param input Optional search query to filter bug reports by title or description.
-     * @param page  The page index for pagination, defaults to 0 if not provided.
-     * @param size  The size of items per page for pagination, defaults to 20 if not provided.
-     * @param model The Model object to store attributes for rendering the view.
-     * @return The name of the view template to be rendered. Redirects to the homepage
-     *         if the input query is empty or blank, otherwise returns "homescreen".
+     * @param input       The search query input to filter bugs by title or description (optional).
+     * @param page        The page number for pagination (default is 0).
+     * @param size        The number of results per page (default is 20, maximum is 100).
+     * @param sortOrder   The sorting criteria for results (default is "id").
+     * @param model       The model object to pass attributes to the view layer.
+     * @return The name of the view template to be rendered.
      */
     @GetMapping("/search")
     public String getSearchResult(@RequestParam(required = false) String input,
